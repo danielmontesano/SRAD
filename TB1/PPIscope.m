@@ -31,4 +31,4 @@ figure(4);
 h=pcolor(X,Y,C);
 axis equal;
 set(h, 'EdgeColor', 'none');
-
+colorbar

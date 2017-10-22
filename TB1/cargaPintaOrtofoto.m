@@ -27,7 +27,6 @@ ortofoto.PosicionRadar = [posRadarX posRadarY]; %Posicion del radar en cartesian
 ortofoto.PosicionRadar_LonLat = [lonInput latInput]; %Posicion del radar en geograficas
 
 % representarOrtofoto apañao
-figure (1);
 hold on;
 transparencia=1;
 % esto es para el tema de las transparencia, miro si la ortofoto tiene
