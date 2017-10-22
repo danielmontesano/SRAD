@@ -23,8 +23,6 @@ fs=Data.SampleFrequency;
 N=max(size(canal1));
 % n?mero de muestras
 
-% t=(0:(N-1))/fs;
-% cambio de arturo
 paso=1;
 %eje de tiempos
 k=1;
