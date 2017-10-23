@@ -44,15 +44,26 @@ xlabel('Distancia (m)')
 ylabel('V')
 k=k+1;
 
+% ax2 = axes('Position',[.3 .1 .6 .8]);
 ax1 = axes('Position',[0 0 1 1],'Visible','off');
 str(1) = {'Celda de azimut:'};
 str(2) = {k};
 str(3) = {'Grados:'};
 str(4) = {k*(360/(length(canal1(1,:))))};
 % axes(ax1)
+% info(1) = {'Frecuencia de muestreo:'};
+% info(2)= {fs};
+% info(3) = {'Celdas Azimut:'};
+% info(4) ={celdasAz};
+% info(5) = {'Celdas Distancia:'};
+% info(6)={celdasDis};
+% info(7) = {'Escala:'};
+% info(8)={escala};
+% annotation('textbox', [.6 .4 .3 .3], 'String', info,'FitBoxToText','on');
+
 text(.025,.6,str,'FontSize',12)
 
-pause(.006)
+pause(.06)
 end
 
 
