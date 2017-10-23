@@ -23,35 +23,31 @@ fs=Data.SampleFrequency;
 N=max(size(canal1));
 % n?mero de muestras
 
-t=(0:(N-1))/fs;
-paso=1;
-%eje de tiempos
 x=360/length(canal1(1,:))*(1:1:length(canal1(1,:)));
 y=(escala*1852/length(canal1(:,1)))*(1:1:length(canal1(:,1)));
 
-% thetaX = pi*(0:length(canal1(1,:))-1)/length(canal1(1,:));
-% thetaY = pi*(0:length(canal1(:,1))-1)/length(canal1(:,1));
-% 
-% x1=x.*cos(thetaX);
-% y1=y.*sin(thetaY);
 
-% figure(1)
-% pcolor(x,y,canal1);
-% set(gca,'Ydir','reverse')
-% colorbar
-
-figure(2)
+figure(1)
 imagesc(x,y,(-1*canal1));
 set(gca,'Ydir','Normal')
 axis([0 inf 0 inf])
 xlabel('Grados')
 ylabel('Distancia (m)')
 colorbar
-% 
-figure(3)
-x=linspace(0,360,length(canal1(1,:)));
-y=linspace(0,escala*1852,length(canal1(:,1)));
-z=-canal1;
-h=pcolor(x,y,z)
-set(h, 'EdgeColor', 'none');
-colorbar
+info(1) = {'Frecuencia de muestreo:'};
+info(2)= {fs};
+info(3) = {'Celdas Azimut:'};
+info(4) ={celdasAz};
+info(5) = {'Celdas Distancia:'};
+info(6)={celdasDis};
+info(7) = {'Escala:'};
+info(8)={escala};
+annotation('textbox', [.8 .5 .3 .3], 'String', info,'FitBoxToText','on');
+
+% figure(3)
+% x=linspace(0,360,length(canal1(1,:)));
+% y=linspace(0,escala*1852,length(canal1(:,1)));
+% z=-canal1;
+% h=pcolor(x,y,z)
+% set(h, 'EdgeColor', 'none');
+% colorbar
