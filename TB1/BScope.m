@@ -20,11 +20,12 @@ rpm=Data.Rpm;
 PRF=Data.PRF;
 fs=Data.SampleFrequency;
 
-N=max(size(canal1));
+N=length(canal1(:,1));
 % n?mero de muestras
 
-x=360/length(canal1(1,:))*(1:1:length(canal1(1,:)));
-y=(escala*1852/length(canal1(:,1)))*(1:1:length(canal1(:,1)));
+Rmax = (N/fs)*3e8/2;
+y = linspace(0,Rmax,N); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
+x = linspace(0,360,celdasAz);
 
 
 figure(1)

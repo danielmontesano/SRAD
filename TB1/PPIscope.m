@@ -21,11 +21,14 @@ rpm=Data.Rpm;
 PRF=Data.PRF;
 fs=Data.SampleFrequency;
 
+N = length(canal1(:,1));%Numero de muestras
 
 %%
 %Primera representacion para corregir el offset de distancia
+
+Rmax = (N/fs)*3e8/2;
 theta = pi*(linspace(-1,1,length(canal1(1,:)))); %Se crea un vector de longitud el numero de pulsos que recorra los 360 grados
-r = linspace(0,escala*1851,length(canal1(:,1))); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
+r = linspace(0,Rmax,N); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
 
 %pasamos a coordenadas polares
 X = r'*cos(theta);
@@ -49,10 +52,12 @@ aux = find(r>offsetD);%Averiguamos el indice de ese ofset
 indexD = aux(1);
 
 canal1 = canal1(indexD:end,:);%Recortamos la matriz radar
+N = length(canal1(:,1));%Numero de muestras
 
 %%
-%Segunda representacion para corregir offset de distancia y azimut
-r = linspace(0,escala*1851,length(canal1(:,1))); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
+%Segunda representacion para corregir offset de azimut
+theta = pi*(linspace(-1,1,length(canal1(1,:)))); %Se crea un vector de longitud el numero de pulsos que recorra los 360 grados
+r = linspace(0,Rmax,N); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
 
 %pasamos a coordenadas polares
 X = r'*cos(theta);
@@ -69,20 +74,11 @@ disp('Seleccionar blanco conocido')
 [Xoffset, Yoffset] = ginput(1);
 %Las pasamos  a coordenadas polares
 AzOffset = -atan(Yoffset/Xoffset)+pi/2;%Mas 90grad por donde esta colocado el 0.
-DOffset = sqrt(Yoffset^2 + Xoffset^2);
 
 %Obtenemos las coordenadas polares de un blanco conocido
-AzTarget = deg2rad(input('Azimut del blanco conocido (deg)'));
-DTarget = input('Distancia del blanco conocido (km)')*1000;%Pasamos a metros
-
-
-offsetEscala = DTarget/DOffset;
-escala = escala*offsetEscala;
+AzTarget = deg2rad(input('Azimut del blanco conocido (deg) '));
 
 Azimut = AzTarget - AzOffset;
-
-%Se recalcula con el ofset de distancia
-r = linspace(0,escala*1851,length(canal1(:,1))); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
 
 %pasamos a coordenadas polares
 X = r'*cos(theta-Azimut);%Se corrige el offset de azimut
