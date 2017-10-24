@@ -1,21 +1,13 @@
 PPIscope; %Funcion que carga la matriz radar
-close all;
+close all; %Cerramos la figura ya que generaremos otra nueva con offsets de la ortofoto
 cargaPintaOrtofoto; %Funcion que carga la ortofoto
 
 Xo=ortofoto.PosicionRadar(1); %Se saca la posicion del radar
 Yo=ortofoto.PosicionRadar(2);
-
-% radius = geocradius(Yo); %Calculamos el radio en la latitud dada
-% degX = km2deg(escala*1852,radius); %Convertimos nuestra distancia maxima en grados
-
-% Rx = linspace(0,degX,length(canal1(:,1)));
-% Ry = linspace(0,degX,length(canal1(:,1)));
-
-
-
+%El offset de escala y rango ya se ha corregido antes
 %pasamos a coordenadas polares
-X = r'*cos(theta-Azimut)+Xo;%Se le suma el offset de la posicion del radar
-Y = r'*sin(theta-Azimut)+Yo;%Se le suma el offset de la posicion del radar
+X = r'*cos(theta-Azimut)+Xo;%Se le suma el offset de la posicion del radar y se corrige el offset en azimut
+Y = r'*sin(theta-Azimut)+Yo;%Se le suma el offset de la posicion del radar y se corrige el offset en azimut
 C = -flip(canal1')';
 h=pcolor(X,Y,C);
 axis equal;
