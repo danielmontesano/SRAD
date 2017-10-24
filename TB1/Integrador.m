@@ -30,6 +30,11 @@ Yo=ortofoto.PosicionRadar(2);
 % Rx = linspace(0,degX,length(canal1(:,1)));
 % Ry = linspace(0,degX,length(canal1(:,1)));
 
+%filtro ideal iir
+f = [0 0.6 0.6 1];
+m = [1 1 0 0];
+[b,a] = yulewalk(8,f,m);
+[h,w] = freqz(b,a,length(canal1(:,1)));
 
 
 theta = pi*(linspace(-1,1,length(canal1(1,:)))); %Se crea un vector de longitud el numero de pulsos que recorra los 360 grados
@@ -40,7 +45,7 @@ X = r'*cos(theta)+Xo;%Se le suma el offset de la posicion del radar
 Y = r'*sin(theta)+Yo;%Se le suma el offset de la posicion del radar
 C = -canal1;
 figure(4);
-h=pcolor(X,Y,C);
+h=pcolor(X,Y,C.*abs(h));
 axis equal;
 set(h, 'EdgeColor', 'none');
 
