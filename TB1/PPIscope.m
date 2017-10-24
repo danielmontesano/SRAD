@@ -25,9 +25,9 @@ theta = pi*(linspace(-1,1,length(canal1(1,:)))); %Se crea un vector de longitud 
 r = linspace(0,escala*1851,length(canal1(:,1))); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
 
 %pasamos a coordenadas polares
-X = r'*cos(theta);
-Y = r'*sin(theta);
-C = -canal1;
+X = r'*cos(theta-deg2rad(00));
+Y = r'*sin(theta-deg2rad(00));
+C = -flip(canal1')';
 
 figure(4);
 h=pcolor(X,Y,C);
