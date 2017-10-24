@@ -35,7 +35,7 @@ sync = canal2(:,1);
 ax1 = axes('Position',[0 0 2 2],'Visible','off');
 
 subplot (2,1,1)
-h_1 = plot(distancia, radar);
+h_1 = plot(tiempos, radar);
 title('Pantalla tipo A')
 grid
 xlabel('Distancia (m)')
@@ -66,7 +66,7 @@ ylabel('V')
 %text(.025,.6,str,'FontSize',12)
 
 
-h_1.XDataSource = 'distancia';
+h_1.XDataSource = 'tiempos';
 h_1.YDataSource = 'radar';
 
 h_2.XDataSource = 'tiempos';
