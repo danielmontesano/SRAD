@@ -34,7 +34,7 @@ Yo=ortofoto.PosicionRadar(2);
 f = [0 0.6 0.6 1];
 m = [1 1 0 0];
 [b,a] = yulewalk(8,f,m);
-[h,w] = freqz(b,a,length(canal1(:,1)));
+[h1,w] = freqz(b,a,length(canal1(:,1)));
 
 
 theta = pi*(linspace(-1,1,length(canal1(1,:)))); %Se crea un vector de longitud el numero de pulsos que recorra los 360 grados
@@ -44,8 +44,9 @@ r = linspace(0,escala*1851,length(canal1(:,1))); %se crea un vector de longitud 
 X = r'*cos(theta)+Xo;%Se le suma el offset de la posicion del radar
 Y = r'*sin(theta)+Yo;%Se le suma el offset de la posicion del radar
 C = -canal1;
-figure(4);
-h=pcolor(X,Y,C.*abs(h));
+figure(1);
+title('Con filtro')
+h=pcolor(X,Y,C.*abs(h1));
 axis equal;
 set(h, 'EdgeColor', 'none');
 
@@ -53,5 +54,18 @@ hold on
 %superponemos la ortofoto
 h_ortofoto=mapshow(ortofoto.foto(:,:,1:fin),color,ortofoto.R, alfa{:}, 'DisplayType', 'image');
 radar_h=plot(ortofoto.PosicionRadar(1), ortofoto.PosicionRadar(2),'r+','MarkerSize',10);
+axis tight equal
+colorbar
+
+figure(2)
+title('Sin filtro')
+h2=pcolor(X,Y,C);
+axis equal;
+set(h2, 'EdgeColor', 'none');
+
+hold on
+%superponemos la ortofoto
+h2_ortofoto=mapshow(ortofoto.foto(:,:,1:fin),color,ortofoto.R, alfa{:}, 'DisplayType', 'image');
+radar_h2=plot(ortofoto.PosicionRadar(1), ortofoto.PosicionRadar(2),'r+','MarkerSize',10);
 axis tight equal
 colorbar
