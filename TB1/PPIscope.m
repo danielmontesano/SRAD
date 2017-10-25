@@ -53,6 +53,7 @@ indexD = aux(1);
 
 canal1 = canal1(indexD:end,:);%Recortamos la matriz radar
 N = length(canal1(:,1));%Numero de muestras
+Rmax = (N/fs)*3e8/2;
 
 %%
 %Segunda representacion para corregir offset de azimut

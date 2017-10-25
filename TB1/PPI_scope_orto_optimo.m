@@ -5,19 +5,23 @@ cargaPintaOrtofoto; %Funcion que carga la ortofoto
 res = 3e8*tau/2;
 Ncel = Rmax/res;
 
-r_opt = (0:res:Rmax);
-radar_opt=zeros(Ncel,celdasAz);
+%radar_opt=zeros(Ncel,celdasAz);
 paso=N/Ncel;
 
-for j=1:celdasAz
-    for i=0:Ncel-1
-        radar_opt(i+1,j) = sum(canal1(1+i*4:i*4+4,j))/floor(paso);
-    end
-end
-r = r_opt;
+aux = movsum(canal1, paso, 2);
+radar_opt = aux(1:round(paso):end,:);
+r_opt = linspace(0,Rmax,length(radar_opt(:,1)));
 
-Xo=ortofoto.PosicionRadar(1); %Se saca la posicion del radar
-Yo=ortofoto.PosicionRadar(2);
+% for j=1:celdasAz
+%     for i=0:Ncel-1
+%         radar_opt(i+1,j) = sum(canal1(1+i*4:i*4+4,j))/floor(paso);
+%     end
+% end
+r = r_opt;
+theta = pi*(linspace(-1,1,length(radar_opt(1,:))));
+ 
+Xo = ortofoto.PosicionRadar(1); %Se saca la posicion del radar
+Yo = ortofoto.PosicionRadar(2);
 %El offset de escala y rango ya se ha corregido antes
 %pasamos a coordenadas polares
 X = r'*cos(theta-Azimut)+Xo;%Se le suma el offset de la posicion del radar y se corrige el offset en azimut
