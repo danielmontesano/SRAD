@@ -6,7 +6,7 @@ Npuls = PRF*1.2/(6*rpm);
 
 %radar_opt=zeros(Ncel,celdasAz);
 
-canal1 = movsum(canal1, Npuls, 1);
+canal1 = movsum(canal1, round(Npuls), 1);
 
 % for j=1:celdasAz
 %     for i=0:Ncel-1
