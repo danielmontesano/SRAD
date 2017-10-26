@@ -85,12 +85,13 @@ colorbar;
 disp('Seleccionar blanco conocido')
 [Xoffset, Yoffset] = ginput(1);
 %Las pasamos  a coordenadas polares
-AzOffset = -atan(Yoffset/Xoffset)+pi/2;%Mas 90grad por donde esta colocado el 0.
+AzOffset = -atan2(Yoffset,Xoffset)+pi/2;%Mas 90grad por donde esta colocado el 0.
 
 %Obtenemos las coordenadas polares de un blanco conocido
 AzTarget = deg2rad(input('Azimut del blanco conocido (deg) '));
 
 Azimut = AzTarget - AzOffset;
+fprintf('Azimut corregido: %.1f grados.\n', rad2deg(Azimut));
 
 %pasamos a coordenadas polares
 X = r'*cos(theta-Azimut);%Se corrige el offset de azimut
