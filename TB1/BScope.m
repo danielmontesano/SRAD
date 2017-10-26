@@ -4,6 +4,7 @@ close all
 [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos digitalizados a procesar');
 load (cat(2, directorio, DatosPlots)); % los datos de plots
 
+
 canal1=Data.Channel1;
 canal1=double(canal1);
 
