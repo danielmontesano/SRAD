@@ -2,6 +2,16 @@ PPIscope; %Funcion que carga la matriz radar
 close all; %Cerramos la figura ya que generaremos otra nueva con offsets de la ortofoto
 cargaPintaOrtofoto; %Funcion que carga la ortofoto
 
+fprintf('Tiempo: %s .\n', time);
+fprintf('Frecuencia de muestreo: %s Hz .\n', fs);
+fprintf('Celdas Azimut: %d .\n' , (celdasAz));
+fprintf('Celdas Distancia: %d .\n' ,celdasDis);
+fprintf('Resolución: %d .\n' ,bits);
+fprintf('Escala: %d mn .\n' ,escala);
+fprintf('Tau: %s s .\n' ,tau);
+fprintf('Rpm: %d rpm .\n' ,rpm);
+fprintf('PRF: %d Hz .\n' ,PRF);
+
 res = 3e8*tau/2;
 Ncel = Rmax/res;
 
