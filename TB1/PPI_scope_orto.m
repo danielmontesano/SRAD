@@ -29,3 +29,5 @@ h_ortofoto=mapshow(ortofoto.foto(:,:,1:fin),color,ortofoto.R, alfa{:}, 'DisplayT
 radar_h=plot(ortofoto.PosicionRadar(1), ortofoto.PosicionRadar(2),'r+','MarkerSize',10);
 axis tight equal
 colorbar
+xlabel('Longitud')
+ylabel('Latitud')

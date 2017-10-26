@@ -1,9 +1,7 @@
-
 clear all
 close all
 [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos digitalizados a procesar');
 load (cat(2, directorio, DatosPlots)); % los datos de plots
-
 
 canal1=Data.Channel1;
 canal1=double(canal1);
@@ -21,7 +19,6 @@ rpm=Data.Rpm;
 PRF=Data.PRF;
 fs=Data.SampleFrequency;
 
-
 fprintf('Tiempo: %s .\n', time);
 fprintf('Frecuencia de muestreo: %s Hz .\n', fs);
 fprintf('Celdas Azimut: %d .\n' , (celdasAz));
@@ -33,12 +30,10 @@ fprintf('Rpm: %d rpm .\n' ,rpm);
 fprintf('PRF: %d Hz .\n' ,PRF);
 
 N=length(canal1(:,1));
-% n?mero de muestras
 
 Rmax = (N/fs)*3e8/2;
 y = linspace(0,Rmax,N); %se crea un vector de longitud el numero de muestras por periodo y de valor maximo el fondo de escala
 x = linspace(0,360,celdasAz);
-
 
 figure(1)
 imagesc(x,y,(-1*canal1));
@@ -46,4 +41,5 @@ set(gca,'Ydir','Normal')
 axis([0 inf 0 inf])
 xlabel('Grados')
 ylabel('Distancia (m)')
+title('Pantalla Tipo B')
 colorbar

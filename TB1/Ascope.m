@@ -4,7 +4,6 @@ close all
 [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos digitalizados a procesar');
 load (cat(2, directorio, DatosPlots)); % los datos de plots
 
-
 canal1=Data.Channel1;
 canal1=double(canal1);
 
@@ -31,19 +30,14 @@ fprintf('Tau: %s s .\n' ,tau);
 fprintf('Rpm: %d rpm .\n' ,rpm);
 fprintf('PRF: %d Hz .\n' ,PRF);
 
-
 N=length(canal1(:,1));
-% numero de muestras
 
 figure(1)
-
 Rmax = (N/fs)*3e8/2;
 distancia = linspace(0,Rmax,N);
 tiempos = linspace(0,N/fs,N);
 radar = canal1(:,1);
 sync = canal2(:,1);
-
-
 
 subplot (2,1,1)
 h_1 = plot(distancia, radar);
@@ -57,14 +51,11 @@ grid
 xlabel('Tiempo (s)')
 ylabel('V')
 
-
 h_1.XDataSource = 'distancia';
 h_1.YDataSource = 'radar';
 
 h_2.XDataSource = 'tiempos';
 h_2.YDataSource = 'sync';
-
-
 
 paso=1;
 k=1;
