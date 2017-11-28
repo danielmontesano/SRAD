@@ -141,3 +141,27 @@ grid
 title ('Frecuencia Doppler Medida')
 xlabel('N?mero de medida')
 ylabel('Velocidad (cm/sg) slots')
+
+%% Ejercicio 3
+
+Rmesa=0.9;
+Rantena_mesa=2.4;
+
+relacionR=(Rantena_mesa+Rmesa)/Rantena_mesa
+
+if fc==8e9
+Pmax= 10^((max(20*log10(Amax))/10));
+Pmin = 10^5.87;
+Vmax=11.73;
+Vmin=6.72;
+else
+Pmax= 10^((max(20*log10(Amax))/10));
+Pmin = 10^5.875; 
+Vmax=11.38;
+Vmin=6.72;
+end
+
+relacionP=Pmax/Pmin;
+relacionP_1_4= relacionP^(1/4)
+relacionV=Vmax/Vmin;
+relacionV_1_2=relacionV^(1/2)
