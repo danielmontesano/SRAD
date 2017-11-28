@@ -3,7 +3,7 @@
 %               SISTEMAS RADAR MUIT  2017/18
 %                  GMR  SSR  ETSIT  UPM
 %
-% Programa b?sico de procesado de un CW-RADAR
+% Programa basico de procesado de un CW-RADAR
 % Un solo canal
 %
 % Datos de entrada: capturas HST5
@@ -190,3 +190,4 @@ As_PRG_CILtum=s_PRG/s_CILtum;
 As_PRG_ESF=s_PRG/s_ESF;
 
 Pmax=10^((max(20*log10(Amax))/10));
+
