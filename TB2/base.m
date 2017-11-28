@@ -165,3 +165,28 @@ relacionP=Pmax/Pmin;
 relacionP_1_4= relacionP^(1/4)
 relacionV=Vmax/Vmin;
 relacionV_1_2=relacionV^(1/2)
+
+%% Ejercicio 4
+%Calculo de secciones radar
+%fc=9e9
+lambda=3e8/fc;
+a=0.2;
+b=0.2;
+r=0.07;
+l=0.2;
+resf=0.1;
+
+s_PRG=(4*pi*(a*b)^2)/((lambda)^2);
+s_CILcirc=pi*((r)^2);
+s_CILtum=(2*pi*r*l)/lambda;
+s_ESF=pi*((resf)^2);
+
+% pillar variacion de potencia entre un objeto y otro (distintos ficheros)
+% y comparar con la variacion entre sus secciones radar
+
+%relacion entre secciones radar con referencia PRG
+As_PRG_CILcir=s_PRG/s_CILcirc;
+As_PRG_CILtum=s_PRG/s_CILtum;
+As_PRG_ESF=s_PRG/s_ESF;
+
+Pmax=10^((max(20*log10(Amax))/10));
