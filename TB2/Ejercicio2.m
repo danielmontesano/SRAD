@@ -79,7 +79,7 @@ cont=0;
 %     ylim([0 40])
 %      pause
     std_vel_np(i) = std(vel);
-    vel = [];
+%     vel = [];
 end
 
 figure(4)
@@ -91,23 +91,24 @@ ylabel('Desviacion Tipica')
 
 %% Variacion del Zero Padding
 
-vec_zp = 4:2:128;
+vec_zp2 = 1:2:128;
+np2=256;% % n?mero de muestras de STFT
 
-for i = 1:length(vec_zp)
+for i = 1:length(vec_zp2)
     
-np=256;% % n?mero de muestras de STFT
-zp=np*vec_zp(i); % n?mero de muestras de la FFT, entre np y zp se rellenan con ceros Zero-Padding
+
+zp2=np2*vec_zp2(i); % n?mero de muestras de la FFT, entre np y zp se rellenan con ceros Zero-Padding
 paso=32;
 M=N/paso;
-fdop=(0:(zp-1))*fs/zp; % eje de frecuencias de la FFT
+fdop2=(0:(zp2-1))*fs/zp2; % eje de frecuencias de la FFT
 t=(0:(N-1))/fs; %eje de tiempos
 cont=0;
-    for k=1:paso:floor(N-1.5*np)
+    for k=1:paso:floor(N-1.5*np2)
        cont=cont+1;
-       Yfft=fft(Ap(1,1+(k-1):np+(k-1)),zp);%FFT en el slot k
-       Amax(cont)=max(abs(Yfft));
-       fmed(cont)=(find(abs(Yfft)==Amax(cont), 1 )-1)*fs/zp;
-       vel(cont) = (fmed(cont)*((3e8)/fc)/2)*100;
+       Yfft2=fft(Ap(1,1+(k-1):np2+(k-1)),zp2);%FFT en el slot k
+       Amax2(cont)=max(abs(Yfft2));
+       fmed2(cont)=(find(abs(Yfft2)==Amax2(cont), 1 )-1)*fs/zp2;
+       vel2(cont) = (fmed2(cont)*((3e8)/fc)/2)*100;
     end
 
 %     figure(5)
@@ -118,12 +119,12 @@ cont=0;
 %     ylabel('Velocidad (cm/sg) slots')
 %     ylim([0 40])
 %      pause
-    std_vel_zp(i) = std(vel);
-    vel = [];
+    std_vel_zp2(i) = std(vel2);
+%     vel = [];
 end
 
 figure(6)
-plot(vec_zp, std_vel_zp)
+plot(vec_zp2, std_vel_zp2)
 title(['Desviacion tipica de la velocidad. ' num2str(fc_input) 'GHz'])
 xlabel('Multiplicador de Zero Padding')
 ylabel('Desviacion Tipica')
@@ -134,7 +135,7 @@ ylabel('Desviacion Tipica')
 %% 
 % Sin cortes
 N=max(size(A));
-vec_np_entera = 32:8:512;
+vec_np_entera = 16:8:512;
 
 for i = 1:length(vec_np_entera)
     
@@ -150,7 +151,7 @@ cont=0;
        Yfft=fft(A(1,1+(k-1):np+(k-1)),zp);%FFT en el slot k
        Amax(cont)=max(abs(Yfft));
        fmed(cont)=(find(abs(Yfft)==Amax(cont), 1 )-1)*fs/zp;
-       vel(cont) = (fmed(cont)*((3e8)/fc)/2)*100;
+       vel3(cont) = (fmed(cont)*((3e8)/fc)/2)*100;
     end
 
 %     figure(7)
@@ -161,8 +162,8 @@ cont=0;
 %     ylabel('Velocidad (cm/sg) slots')
 %     ylim([0 40])
 %      pause
-    std_vel_np_entera(i) = std(vel);
-    vel = [];
+    std_vel_np_entera(i) = std(vel3);
+%     vel = [];
 end
 
 figure(8)
