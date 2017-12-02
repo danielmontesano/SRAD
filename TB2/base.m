@@ -51,7 +51,13 @@ grid
 xlabel('tiempo (sg)')
 ylabel('V')
 title('Datos Digitalizados')
-pause
+disp('Seleccione Velocidad minima')
+[x, Vmin] =ginput();
+disp('Seleccione Velocidad maxima')
+[x1, Vmax] =ginput();
+
+
+% pause
 
 cont=0;
 for k=1:paso:floor(N-1.5*np)
@@ -64,20 +70,20 @@ for k=1:paso:floor(N-1.5*np)
     %Construyendo Matriz temporal de FFTs
     %Espectrograma o STFT
     
-   figure(2)
-   subplot(211)
-   plot((0:(np-1))/fs,A(1,1+(k-1):np+(k-1)),'-o')
-   title(['Muestras utilizadas en el slot   '  num2str(cont) ])
-   xlabel('tiempo (sg)')
-   grid 
-   ylabel('V')
-   subplot(212)
-   plot(fdop,20*log10(abs(Yfft)),'-o')
-   grid
-   xlabel('Frecuencia (Hz)')
-   ylabel('dB')
-   title('FFT')
-   axis([0 50 max(20*log10(abs(Yfft)))-80 max(20*log10(abs(Yfft)))])
+%    figure(2)
+%    subplot(211)
+%    plot((0:(np-1))/fs,A(1,1+(k-1):np+(k-1)),'-o')
+%    title(['Muestras utilizadas en el slot   '  num2str(cont) ])
+%    xlabel('tiempo (sg)')
+%    grid 
+%    ylabel('V')
+%    subplot(212)
+%    plot(fdop,20*log10(abs(Yfft)),'-o')
+%    grid
+%    xlabel('Frecuencia (Hz)')
+%    ylabel('dB')
+%    title('FFT')
+%    axis([0 50 max(20*log10(abs(Yfft)))-80 max(20*log10(abs(Yfft)))])
   
    Amax(cont)=max(abs(Yfft));
    fmed(cont)=(find(abs(Yfft)==Amax(cont), 1 )-1)*fs/zp;
@@ -101,30 +107,30 @@ MLog=20*log10(abs(Matriz));
 
 
 % Presentaci?n de Resultados
+% 
+% figure(3)
+% 
+% pcolor(X,Y*3e8/fc/2*100,abs(Matriz))
 
-figure(3)
 
-pcolor(X,Y*3e8/fc/2*100,abs(Matriz))
+% grid
+% colorbar
+% axis('square')
+% title('Espectrograma')
+% axis([0 floor(M) 0 50])
+% xlabel('N?mero de medida')
+% ylabel('Velocidad (cm/sg)')
+% shading flat
 
-
-grid
-colorbar
-axis('square')
-title('Espectrograma')
-axis([0 floor(M) 0 50])
-xlabel('N?mero de medida')
-ylabel('Velocidad (cm/sg)')
-shading flat
-
-figure(4)
-subplot(111)
-mesh(X,Y*3e8/fc/2*100,(MLog))
-% legend('-3', '-6', '-10','-30','-50')
-title('STFT')
-
-%axis([0 floor(M) 0 50 -50 0])
-xlabel('N?mero de medida')
-ylabel('Velocidad (cm/sg)')
+% figure(4)
+% subplot(111)
+% mesh(X,Y*3e8/fc/2*100,(MLog))
+% % legend('-3', '-6', '-10','-30','-50')
+% title('STFT')
+% 
+% %axis([0 floor(M) 0 50 -50 0])
+% xlabel('N?mero de medida')
+% ylabel('Velocidad (cm/sg)')
 
 
 figure(5)
@@ -133,6 +139,10 @@ grid
 title ('Potencia de la medida dB')
 xlabel('N?mero de medida slots')
 ylabel('dB')
+disp('Seleccione Potencia minima')
+[x2, Pmin] =ginput();
+disp('Seleccione Potencia maxima')
+[x3, Pmax] =ginput();
 
 figure(6)
 plot(fmed*3e8/fc/2*100);
@@ -147,29 +157,20 @@ ylabel('Velocidad (cm/sg) slots')
 Rmesa=0.9;
 Rantena_mesa=2.4;
 
-relacionR=(Rantena_mesa+Rmesa)/Rantena_mesa
+relacionR=(Rantena_mesa+Rmesa)/Rantena_mesa;
 
-if fc==8e9
-Pmax= 10^((max(20*log10(Amax))/10));
-Pmin = 10^5.87;
-Vmax=11.73;
-Vmin=6.72;
-else
-Pmax= 10^((max(20*log10(Amax))/10));
-Pmin = 10^5.875; 
-Vmax=11.38;
-Vmin=6.72;
-end
 
-relacionP=Pmax/Pmin;
-relacionP_1_4= relacionP^(1/4)
+relacionP=(10^(Pmax/10))/(10^(Pmin/10));
+relacionP_1_4= relacionP^(1/4);
 relacionV=Vmax/Vmin;
-relacionV_1_2=relacionV^(1/2)
+relacionV_1_2=relacionV^(1/2);
 
 %% Ejercicio 4
+
 %Calculo de secciones radar
 %fc=9e9
 lambda=3e8/fc;
+%Tamaños dados
 a=0.2;
 b=0.2;
 r=0.07;
@@ -177,17 +178,44 @@ l=0.2;
 resf=0.1;
 
 s_PRG=(4*pi*(a*b)^2)/((lambda)^2);
-s_CILcirc=pi*((r)^2);
-s_CILtum=(2*pi*r*l)/lambda;
+s_CILcirc=(4*pi*(pi*(r)^2)^2)/((lambda)^2);
+s_CILtum=(2*pi*r*l^2)/lambda;
 s_ESF=pi*((resf)^2);
 
-% pillar variacion de potencia entre un objeto y otro (distintos ficheros)
+% Potencias teoricas
+Pgen=(10^(-13/10)); 
+G= 10^(27/10);
+
+PteoricaPRG = (Pgen*G*G*s_PRG*(lambda^2))/(((4*pi)^3)*(Rantena_mesa)^4);
+PteoricaCILcirc = (Pgen*G*G*s_CILcirc*lambda^2)/((4*pi)^3*Rantena_mesa^4);
+PteoricaCILtum = (Pgen*G*G*s_CILtum*lambda^2)/((4*pi)^3*Rantena_mesa^4);
+PteoricaESF = (Pgen*G*G*s_ESF*lambda^2)/((4*pi)^3*Rantena_mesa^4);
+
+% Coger variacion de potencia entre un objeto y otro (distintos ficheros)
 % y comparar con la variacion entre sus secciones radar
 
-%relacion entre secciones radar con referencia PRG
-As_PRG_CILcir=s_PRG/s_CILcirc;
-As_PRG_CILtum=s_PRG/s_CILtum;
-As_PRG_ESF=s_PRG/s_ESF;
+% Relacion entre secciones radar con referencia PRG
+As_PRG_PRG=s_PRG/s_PRG;
+As_PRG_CILcir=s_CILcirc/s_PRG;
+As_PRG_CILtum=s_CILtum/s_PRG;
+As_PRG_ESF=s_ESF/s_PRG;
 
-Pmax=10^((max(20*log10(Amax))/10));
+% Relacion potencia maxima medidad y potencia PRG
+Pprg =10^6.24;
+Pmed_Pprg= (10^(Pmax/10))/Pprg;
+
+%Relacion potencia maxima medidad y potencia teorica
+% relPseccionPRG=PteoricaPRG/(10^(Pmax/10))
+% relPseccionCILcirc=PteoricaCILcirc/Pmax
+% relPseccionCILtum=PteoricaCILtum/Pmax
+% relPseccionESF=PteoricaESF/Pmax
+% 
+% % Relacion potencia maxima medida y seccion radar
+% 
+% relPotSecPRG= 10^(Pmax/10)/s_PRG;
+% relPotSecCILcirc= 10^(Pmax/10)/s_PRG;
+% relPotSecCILtum= 10^(Pmax/10)/s_PRG;
+% relPotSecESF= 10^(Pmax/10)/s_PRG;
+
+
 
