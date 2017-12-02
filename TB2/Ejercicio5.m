@@ -41,7 +41,7 @@ M=N/paso;
 % n?mero de slots
 
 
-fdop=linspace(-fs,fs,zp);
+fdop=linspace(-fs/2,fs/2,zp);
 % eje de frecuencias de la FFT
 
 t=(0:(N-1))/fs;
@@ -76,7 +76,7 @@ for k=1:paso:floor(N-1.5*np)
        xlabel('Frecuencia (Hz)')
        ylabel('dB')
        title('FFT')
-       axis([-50 50 max(20*log10(abs(Yfft)))-80 max(20*log10(abs(Yfft)))])
+       axis([-30 30 max(20*log10(abs(Yfft)))-80 max(20*log10(abs(Yfft)))])
 
 
      pause(0.06);
