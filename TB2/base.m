@@ -157,26 +157,16 @@ ylabel('Velocidad (cm/sg) slots')
 Rmesa=0.9;
 Rantena_mesa=2.4;
 
-relacionR=(Rantena_mesa+Rmesa)/Rantena_mesa
+relacionR=(Rantena_mesa+Rmesa)/Rantena_mesa;
 
-% if fc==8e9
-% Pmax= 10^((max(20*log10(Amax))/10));
-% Pmin = 10^5.87;
-% Vmax=11.73;
-% Vmin=6.72;
-% else
-% Pmax= 10^((max(20*log10(Amax))/10));
-% Pmin = 10^5.875; 
-% Vmax=11.38;
-% Vmin=6.72;
-% end
 
 relacionP=(10^(Pmax/10))/(10^(Pmin/10));
-relacionP_1_4= relacionP^(1/4)
+relacionP_1_4= relacionP^(1/4);
 relacionV=Vmax/Vmin;
-relacionV_1_2=relacionV^(1/2)
+relacionV_1_2=relacionV^(1/2);
 
 %% Ejercicio 4
+
 %Calculo de secciones radar
 %fc=9e9
 lambda=3e8/fc;
@@ -188,8 +178,8 @@ l=0.2;
 resf=0.1;
 
 s_PRG=(4*pi*(a*b)^2)/((lambda)^2);
-s_CILcirc=pi*((r)^2);
-s_CILtum=(2*pi*r*l)/lambda;
+s_CILcirc=(4*pi*(pi*(r)^2)^2)/((lambda)^2);
+s_CILtum=(2*pi*r*l^2)/lambda;
 s_ESF=pi*((resf)^2);
 
 % Potencias teoricas
@@ -204,15 +194,28 @@ PteoricaESF = (Pgen*G*G*s_ESF*lambda^2)/((4*pi)^3*Rantena_mesa^4);
 % Coger variacion de potencia entre un objeto y otro (distintos ficheros)
 % y comparar con la variacion entre sus secciones radar
 
-%relacion entre secciones radar con referencia PRG
+% Relacion entre secciones radar con referencia PRG
+As_PRG_PRG=s_PRG/s_PRG;
 As_PRG_CILcir=s_CILcirc/s_PRG;
 As_PRG_CILtum=s_CILtum/s_PRG;
 As_PRG_ESF=s_ESF/s_PRG;
 
+% Relacion potencia maxima medidad y potencia PRG
+Pprg =10^6.24;
+Pmed_Pprg= (10^(Pmax/10))/Pprg;
+
 %Relacion potencia maxima medidad y potencia teorica
-relPseccionPRG=PteoricaPRG/(10^(Pmax/10))
-relPseccionCILcirc=PteoricaCILcirc/Pmax
-relPseccionCILtum=PteoricaCILtum/Pmax
-relPseccionESF=PteoricaESF/Pmax
+% relPseccionPRG=PteoricaPRG/(10^(Pmax/10))
+% relPseccionCILcirc=PteoricaCILcirc/Pmax
+% relPseccionCILtum=PteoricaCILtum/Pmax
+% relPseccionESF=PteoricaESF/Pmax
+% 
+% % Relacion potencia maxima medida y seccion radar
+% 
+% relPotSecPRG= 10^(Pmax/10)/s_PRG;
+% relPotSecCILcirc= 10^(Pmax/10)/s_PRG;
+% relPotSecCILtum= 10^(Pmax/10)/s_PRG;
+% relPotSecESF= 10^(Pmax/10)/s_PRG;
+
 
 
