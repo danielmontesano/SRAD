@@ -97,4 +97,4 @@ end
 
 %Dibujamos la velocidad a lo largo del tiempo teniendo en cuenta el tiempo
 %de esta
-figure; plot(abs(Amax).*sign(Imax-mean(Imax)));
+figure; plot(fdop(Imax)*3e8/(2*fc));
