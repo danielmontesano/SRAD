@@ -1,23 +1,19 @@
-% Programa para la formaci?n de Matrices Radar para el Radar Pulsado Coherente
-% MUIT 2017/18 TB3
-% SSR
-% Grupo de Microondas y Radar
-% Curso 2017/18
-
-clear all
 close all
 
-[DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
-load (cat(2, directorio, DatosPlots)); % los datos de plots
+load('G_C\DIENTE_ASCOPE_1.mat');
+D=src1.Data;
+D=double(D);
 
-
+% [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
+% load (cat(2, directorio, DatosPlots)); % los datos de plots
+load('G_C\CANAL_I_2.mat');
 A=src1.Data;
 A=double(A);
 
 
-[DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
-load (cat(2, directorio, DatosPlots)); % los datos de plots
-
+% [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
+% load (cat(2, directorio, DatosPlots)); % los datos de plots
+load('G_C\CANAL_Q_2.mat');
 B=src1.Data;
 B=double(B);
 
@@ -26,6 +22,8 @@ N=max(size(A));                % N?mero total de muestras del fichero
 PRF=288;                       % Medida en el Laboratorio
 Np=floor(fs/PRF);              % N?mero entero de celdas en tiempo r?pido, 
                                % Nivel inferior, los blancos se adelantar?n
+R= 0:7.2/Np:7.2;                % Vector de distancias con span 7.2
+
 
 M=round(max(size(A))/Np)-10;   % N?mero de celdas en tiempo lento que se procesan (quito 10)
 
@@ -87,3 +85,16 @@ xlabel('tiempo lento')
 ylabel('tiempo rapido')
 grid
 shading flat 
+
+%Pantalla tipo B con eje de distancias
+figure
+ejex= linspace(1,1,Np);
+imagesc(ejex,R,abs(MatrizRadar)')
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+c.Label.String = 'Amplitud (V)';
+c.Label.FontSize = 11;
+title('Matriz Radar: Radar Pulsado')
+xlabel('Slot')
+ylabel('Distancia (m)')
