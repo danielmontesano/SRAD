@@ -24,6 +24,11 @@ Np=floor(fs/PRF);              % N?mero entero de celdas en tiempo r?pido,
                                % Nivel inferior, los blancos se adelantar?n
 R= 0:7.2/Np:7.2;                % Vector de distancias con span 7.2
 
+deltaR = 0.15; % metros
+deltaR_smuestr = 7.2/N;
+sobremuestreo = round(deltaR/deltaR_smuestr);
+
+
 
 M=round(max(size(A))/Np)-10;   % N?mero de celdas en tiempo lento que se procesan (quito 10)
 
@@ -37,6 +42,7 @@ offsetR=500;                   % Celda inicial para la formaci?n de la matriz, c
   NPER=M;
   K=4;                         % Para ajustar con poco tiempo de ejecuci?n K=4   
 %        figure(100)                        % Fichero completo K=1
+% Quitar el offset
 for k=1:NPER/K
     cont=cont+1;
     cont1=cont1+1;
@@ -75,6 +81,23 @@ for k=1:NPER/K
 
 end
 
+% Diezmado 22 (2 muestras en vez de 44)
+outputMatrix = MatrizRadar(1:22:end, 1:22:end);
+
+
+figure(3)
+ejex= linspace(1,1,Np);
+pcolor(20*log10(abs(outputMatrix))')
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+c.Label.String = 'Amplitud (V)';
+c.Label.FontSize = 11;
+title('Matriz Radar: Radar Pulsado')
+xlabel('Slot')
+ylabel('Distancia (m)')
+shading flat
+
 %Pantall Tipo B
 
 figure(1)
@@ -87,9 +110,10 @@ grid
 shading flat 
 
 %Pantalla tipo B con eje de distancias
-figure
+% no me cuadran las distancias con las tomadas en la practic
+figure(2)
 ejex= linspace(1,1,Np);
-imagesc(ejex,R,abs(MatrizRadar)')
+imagesc(ejex,R,20*log10(abs(MatrizRadar))')
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
