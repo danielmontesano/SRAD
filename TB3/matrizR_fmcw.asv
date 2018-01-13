@@ -92,8 +92,15 @@ wh_mat= hanning(size(MatrizRadar,1));
 
 for i=1:size(MatrizRadar,2)
     MatrizRadar_hann(:,i)= MatrizRadar(:,i).*wh_mat;
-    MatrizRadar_h_fft(:,i)=abs(fft(MatrizRadar_hann(:,i)))./((sum(wh_mat))^2/sum(wh_mat.^2));
+    Matriz_h_fft(:,i)=abs(fft(MatrizRadar_hann(:,i)))./((sum(wh_mat))^2/sum(wh_mat.^2));
 end
+    
+
+% for i = 1:y
+%     Matriz_h(:,i)= MatrizRadar(:,i)'.*wh_mat'; % Ventana Hanning
+%     Matriz_h_fft(:,i)=abs(fft(Matriz_h(:,i),NT_M)/((sum(wh))^2/sum(wh.^2))); % FFT y Zero Padding
+% end
+ 
 
 figure(2)
 colormap jet
@@ -109,7 +116,7 @@ shading flat
 figure(3)
 colormap jet
 
-pcolor(20*log10(abs(MatrizRadar_hann))')
+pcolor(20*log10(absMatrizRadar_hann)')
 title('VENTANA RECTANGULAR')
 colorbar
 ylabel('tiempo r?pido')
