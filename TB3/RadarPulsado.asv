@@ -81,10 +81,12 @@ for k=1:NPER/K
 end
 
 % Filtro adaptado
-for i=1:size(MatrizRadar,2)
+for i=1:size(MatriRadar,2)
  
 Hfa=conj(fft(MatrizRadar(:,i)));
+% Yout=zeros(MatrizRadar);
 Yout(:,i)=ifft(fft(MatrizRadar(:,i).*Hfa));
+Yout2(:,1)=fftshift(Yout(:
 end
 
 figure(4)
