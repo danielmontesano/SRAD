@@ -1,5 +1,5 @@
 function [orden, MatrizRadar] = cancelador(MatrizCancelada)
-%CANCELADOR Simple, Doble o Tripe
+%CANCELADOR Simple, Doble o Triple
 %
 
 
