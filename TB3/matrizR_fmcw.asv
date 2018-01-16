@@ -16,15 +16,15 @@ load ('G_C\CANAL1_2GHZ_FM_5.mat'); % los datos de plots
 A=src1.Data;
 A=double(A);
 Sincro=diff(filter(ones(1,50),1,(A>5))>10);
-Do=find(Sincro==1);    %rampa ascendente
-% Do=find(Sincro==-1);     %rampa descendente
+% Do=find(Sincro==1);    %rampa ascendente
+Do=find(Sincro==-1);     %rampa descendente
 if Do(1)<1000
     D1=Do(2:end);
     Do=[];
     Do=D1;
 end
-Do=Do;                 %retardo del filtro rampa ascendente   
-% Do=Do-40;                %retardo del filtro rampa descendente
+% Do=Do;                 %retardo del filtro rampa ascendente   
+Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
@@ -93,7 +93,7 @@ wh_mat= hanning(size(MatrizRadar,1));
 for i=1:size(MatrizRadar,2)
     MatrizRadar_hann(:,i)= ifft(MatrizRadar(:,i)).*wh_mat;
     MatrizRadar_h_fft(:,i)=(fft(MatrizRadar_hann(:,i)));
-%     MatrizRadar_h_fft(:,i)=(abs(fft(MatrizRadar_hann(:,i))).^2)/((sum(wh_mat)^2)/sum(wh_mat.^2));
+    MatrizRadar_h_fft(:,i) abs(fft(Matriz_h(:,i),NT_M)/((sum(wh)^2)/sum(wh.^2)))
 end
 
 figure(2)
