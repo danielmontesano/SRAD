@@ -97,7 +97,6 @@ end
 
 figure(2)
 colormap jet
-
 pcolor(20*log10((abs(filter([1 0 ],1,MatrizRadar))))')
 title('VENTANA RECTANGULAR')
 colorbar
@@ -108,7 +107,6 @@ shading flat
 
 figure(3)
 colormap jet
-
 pcolor(20*log10(abs(MatrizRadar_hann))')
 title('VENTANA RECTANGULAR')
 colorbar
