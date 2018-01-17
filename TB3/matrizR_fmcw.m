@@ -16,15 +16,15 @@ load ('G_C\CANAL1_2GHZ_FM_5.mat'); % los datos de plots
 A=src1.Data;
 A=double(A);
 Sincro=diff(filter(ones(1,50),1,(A>5))>10);
-Do=find(Sincro==1);    %rampa ascendente
-% Do=find(Sincro==-1);     %rampa descendente
+% Do=find(Sincro==1);    %rampa ascendente
+Do=find(Sincro==-1);     %rampa descendente
 if Do(1)<1000
     D1=Do(2:end);
     Do=[];
     Do=D1;
 end
-Do=Do;                 %retardo del filtro rampa ascendente   
-% Do=Do-40;                %retardo del filtro rampa descendente
+% Do=Do;                 %retardo del filtro rampa ascendente   
+Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
@@ -78,8 +78,8 @@ for k=1:NPER
 %     xlabel('muestras')
 %     ylabel('dB')
 %     axis([1 Nfft*4 0 40 ])
-%     
-%  pause(.01)
+    
+ pause(.01)
    
 end
 
@@ -91,14 +91,18 @@ MatrizRadar=MatrizRadarfft(:,1:4*Nfft/2);
 wh_mat= hanning(size(MatrizRadar,1));
 
 for i=1:size(MatrizRadar,2)
-    MatrizRadar_hann(:,i)= ifft(MatrizRadar(:,i)).*wh_mat;
-    MatrizRadar_h_fft(:,i)=(fft(MatrizRadar_hann(:,i)));
+    MatrizRadar_hann(:,i)= ifft(MatrizRadar(:,i)').*wh_mat';
+%     MatrizCancelada(:,i)= cancelador(1,MatrizRadar_hann(:,i));
+%     MatrizRadar_h_fft(:,i)=(fft(MatrizRadar_hann(:,i)));
 %     MatrizRadar_h_fft(:,i)=(abs(fft(MatrizRadar_hann(:,i))).^2)/((sum(wh_mat)^2)/sum(wh_mat.^2));
 end
 
+MatrizCancelada=cancelador(2,MatrizRadar_hann);
+MatrizRadar_h_fft= fft(MatrizCancelada);
+
 figure(2)
 colormap jet
-pcolor(20*log10((abs(filter([1 0 ],1,MatrizRadar))))')
+pcolor(((abs(filter([1 0 ],1,MatrizRadar))))')
 title('VENTANA RECTANGULAR')
 colorbar
 ylabel('tiempo r?pido')
@@ -108,7 +112,7 @@ shading flat
 
 figure(3)
 colormap jet
-pcolor(20*log10(abs(MatrizRadar_h_fft))')
+pcolor((abs(MatrizRadar_h_fft))')
 title('Matriz con enventanado Hann')
 colorbar
 ylabel('tiempo r?pido')
@@ -119,16 +123,16 @@ shading flat
 figure(4)
 for k=1:size(MatrizRadar,1)
   
-  subplot(211), plot(20*log10(abs(MatrizRadar(k,:))))
+  subplot(211), plot((abs(MatrizRadar(k,:))))
     xlabel('muestras')
-    ylabel('dB')
-    axis([1 Nfft*2 0 40 ])
+    ylabel('V')
+    axis([1 Nfft*2 0 30 ])
     
-    subplot(212),plot(20*log10(abs(MatrizRadar_h_fft(k,:))))
+    subplot(212),plot((abs(MatrizRadar_h_fft(k,:))))
     grid
     xlabel('muestras')
-    ylabel('dB')
-    axis([1 Nfft*2 0 40 ])
+    ylabel('V')
+    axis([1 Nfft*2 0 30 ])
     
  pause(.01)
 end
