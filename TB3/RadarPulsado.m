@@ -18,7 +18,7 @@ load('G_C\CANAL_Q_2.mat');
 B=src1.Data;
 B=double(B);
 
-fs=src1.SampleFrequency
+fs=src1.SampleFrequency;
 N=max(size(A));                % N?mero total de muestras del fichero
 PRF=288;                       % Medida en el Laboratorio
 Np=floor(fs/PRF);              % N?mero entero de celdas en tiempo r?pido, 
@@ -207,3 +207,20 @@ c.Label.FontSize = 11;
 title('Radar Pulsado: Submuestreo')
 xlabel('Slot')
 ylabel('Distancia (m)')
+
+%% Módulo + Integrador
+
+MatrizIntegrada= integrador(1,0, matrizCancelador1);
+
+figure(9)
+colormap jet
+pcolor(((MatrizIntegrada)))
+colorbar
+xlabel('tiempo lento')
+ylabel('tiempo rapido')
+title('Matriz integrada')
+grid
+shading flat 
+
+
+

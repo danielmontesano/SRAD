@@ -1,16 +1,37 @@
-function [MatrizIntegrada] = integrador(rampa, MatrizRadar)
+function [MatrizIntegrada] = integrador(pulsado_fmcw, rampa, MatrizRadar)
 
 % ojo con el conjugado de la matriz
 MatrizModulo = abs(MatrizRadar);
-
 velocidad = 0.3; % 30 cm/s
+
+if pulsado_fmcw ==1 && rampa==0
+    
+%     fs=500000;
+    PRF=288;
+    T=1/PRF;
+    avance_maximo = velocidad*T; %en segundos
+    resolucion = 0.15; % en metros y obtenido en el primer apartado del TB3
+    instantes_de_tiempo = floor(resolucion/avance_maximo); %N? de instantes de tiempo que tarda el blanco en desplazarse una celda de resoluci€n
+%      instantes_de_tiempo = 100;
+for i=1:size(MatrizModulo,2)
+     MatrizRadar_fR_fT(:,i) = filter((1/instantes_de_tiempo)*ones(1,instantes_de_tiempo),1,MatrizModulo(:,i),[],1);
+%     [fila_aux columna_aux] = size(MatrizRadar_fR_fT);
+    MatrizIntegrada = MatrizRadar_fR_fT((instantes_de_tiempo:fila_aux),:);
+end
+elseif pulsado_fmcw ==2
+    
+
+t_rampa=0.003;
+fm=1/t_rampa;
 avance_maximo = velocidad*(1/fm); %en segundos
+
+
  if rampa == 1 
 resolucion = 0.15;
- R = ((3*10^8)*f) / (2*(1 / t_rampa)*(1*10^9));
+ R = ((3*10^8)*fs) / (2*(1 / t_rampa)*(1*10^9));
 elseif rampa == 2
 resolucion = 0.075;   
- R = ((3*10^8)*f) / (2*(1 / t_rampa)*(2*10^9));
+ R = ((3*10^8)*fs) / (2*(1 / t_rampa)*(2*10^9));
  end
 
         % en metros y obtenido en el primer apartado del TB3 para 1GHz de recorrido
@@ -18,9 +39,9 @@ instantes_de_tiempo = floor(resolucion/avance_maximo); %N? de instantes de tiemp
 
 MatrizRadar_fR_fT = filter((1/instantes_de_tiempo)*ones(1,instantes_de_tiempo),1,MatrizModulo,[],2);
 [fila_aux columna_aux] = size(MatrizRadar_fR_fT);
-matriz_radar_integrada = MatrizRadar_fR_fT(:,instantes_de_tiempo:columna_aux);
+MatrizIntegrada = MatrizRadar_fR_fT(:,instantes_de_tiempo:columna_aux);
 
-
+end
 
 
 
