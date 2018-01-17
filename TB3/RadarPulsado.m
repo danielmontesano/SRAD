@@ -1,3 +1,4 @@
+clear all
 close all
 
 load('G_C\DIENTE_ASCOPE_1.mat');
@@ -80,6 +81,7 @@ for k=1:NPER/K
 
 end
 
+MatrizRadar=MatrizRadar';
 %% Filtro adaptado
 
 %Filtrado en dominio de la frecuencia
@@ -91,7 +93,7 @@ end
 
 % Matriz tras filtro adaptado
 figure(5)
-pcolor(20*log10(abs(Yout))')
+pcolor((abs(Yout)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -107,12 +109,12 @@ shading flat
 % Diezmado 22 (2 muestras en vez de 44)
 aux = movsum(MatrizRadar, 22, 1);
 output= aux(:,1:22:end);
-matrizDiezmada = MatrizRadar(:, 1:22:end);
+matrizDiezmada = MatrizRadar(1:11:end,:);
 
 % Diezmado sumado
 figure(3)
 ejex= linspace(1,1,Np);
-pcolor(20*log10(abs(output))')
+pcolor((abs(output)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -126,7 +128,7 @@ shading flat
 %Diezmado 
 figure(4)
 ejex= linspace(1,1,Np);
-imagesc(ejex,R,20*log10(abs(matrizDiezmada))')
+imagesc(ejex,R,(abs(matrizDiezmada)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -141,7 +143,7 @@ xlabel('Slot')
 figure(5)
 matrizCancelador1 = cancelador(1,matrizDiezmada);
 
-imagesc(ejex,R,20*log10(abs(matrizCancelador1))')
+imagesc(ejex,R,(abs(matrizCancelador1)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -154,7 +156,7 @@ xlabel('Slot')
 figure(6)
 matrizCancelador2 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,R,20*log10(abs(matrizCancelador2))')
+imagesc(ejex,R,(abs(matrizCancelador2)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -167,7 +169,7 @@ xlabel('Slot')
 figure(7)
 matrizCancelador3 = cancelador(3,matrizDiezmada);
 
-imagesc(ejex,R,20*log10(abs(matrizCancelador3))')
+imagesc(ejex,R,(abs(matrizCancelador3)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -181,7 +183,7 @@ xlabel('Slot')
 figure(8)
 matrizCancelador0 = cancelador(0,matrizDiezmada);
 
-imagesc(ejex,R,20*log10(abs(matrizCancelador0))')
+imagesc(ejex,R,(abs(matrizCancelador0)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -198,7 +200,7 @@ xlabel('Slot')
 
 figure(1)
  colormap jet
-pcolor(20*log10(abs(MatrizRadar))')
+pcolor((abs(MatrizRadar)))
 colorbar
 xlabel('tiempo lento')
 ylabel('tiempo rapido')
@@ -210,7 +212,7 @@ shading flat
 
 figure(2)
 ejex= linspace(1,1,Np);
-imagesc(ejex,R,20*log10(abs(MatrizRadar))')
+imagesc(ejex,R,(abs(MatrizRadar)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;

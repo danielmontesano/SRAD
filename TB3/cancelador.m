@@ -19,7 +19,7 @@ elseif orden == 3
     
     coefs = [0.125 -0.375 0.375 -0.125];
     MatrizCancelada = filter(coefs,1,MatrizRadar,[],2);
-    MatrizCancelada = MatrizCancelada(:,4:end); 
+    MatrizCancelada = MatrizCancelada(:,3:end); 
     
 else
     
