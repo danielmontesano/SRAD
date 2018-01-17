@@ -107,23 +107,9 @@ shading flat
 %% Diezmado
 
 % Diezmado 22 (2 muestras en vez de 44)
-aux = movsum(MatrizRadar, 22, 1);
-output= aux(:,1:22:end);
-matrizDiezmada = MatrizRadar(1:11:end,:);
-
-% Diezmado sumado
-figure(3)
-ejex= linspace(1,1,Np);
-pcolor((abs(output)))
-set(gca, 'YDir', 'normal');
-colormap('jet')
-c=colorbar;
-c.Label.String = 'Amplitud (V)';
-c.Label.FontSize = 11;
-title('Radar Pulsado submuestreo ponderado')
-xlabel('Slot')
-ylabel('Distancia (m)')
-shading flat
+% aux = movsum(MatrizRadar, 22, 1);
+% output= aux(:,1:22:end);
+matrizDiezmada = MatrizRadar(1:2:end,:);
 
 %Diezmado 
 figure(4)
