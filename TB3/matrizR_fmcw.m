@@ -10,7 +10,7 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C\CANAL1_2GHZ_FM_5.mat'); % los datos de plots
+load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = 182; % los datos de plots
 
 
 A=src1.Data;
@@ -28,7 +28,7 @@ Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
-load ('G_C\CANAL2_2GHZ_FM_5.mat');
+load ('G_C/CANAL2_2GHZ_FM_5.mat');
 
 B=src1.Data;
 B=double(B);
@@ -110,6 +110,12 @@ MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,19);
 
 
 %% Representación Matriz recibida (en crudo)
+BW = 2e9;
+Rmax = fs*Tm1*3e8/(BW*2);
+distancias = linspace(0,Rmax,size(MatrizRadar,1));
+puerta = find(distancias>8.15);
+puerta = puerta(1);
+MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
 
 figure(2)
 colormap jet
