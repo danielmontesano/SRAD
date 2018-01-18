@@ -22,12 +22,14 @@ elseif pulsado_fmcw ==2
  if rampa == 1 
     t_rampa=0.001;
     resolucion = 0.075;
-    R = ((3*10^8)*fs) / (2*(1 / t_rampa)*(2*10^9));
+    R = ((3*10^8)*fb*t_rampa) / (2*(1*10^9));
 elseif rampa == 2
+    fb=16500;
     t_rampa=0.3;
     resolucion = 0.075;   
-    R = ((3*10^8)*fs) / (2*(1 / t_rampa)*(2*10^9));
+    R = ((3*10^8)*fb*t_rampa) / (2*(1*10^9));
  end
+ 
  
     fm=1/t_rampa;
     avance_maximo = velocidad*(1/fm); %en segundos
@@ -42,10 +44,6 @@ for i=1:size(MatrizModulo,1)
 end
     
 end
-
-
-
-
 
 
 end

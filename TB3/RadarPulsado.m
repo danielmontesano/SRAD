@@ -8,6 +8,8 @@ D=double(D);
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
 load('G_C\CANAL_I_2.mat');
+% load('G_C\CANAL_I_SCAN_3.mat');
+% load('G_C\CANAL_I_SCANTRACK_4.mat');
 A=src1.Data;
 A=double(A);
 
@@ -15,6 +17,8 @@ A=double(A);
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
 load('G_C\CANAL_Q_2.mat');
+% load('G_C\CANAL_Q_SCAN_3.mat');
+% load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -97,40 +101,58 @@ title('Matriz Radar a pelo')
 shading flat 
 
 
-%% Filtro adaptado
+ %% Filtro adaptado
+% 
+% %Filtrado en dominio de la frecuencia
+% pulso = zeros(1,size(MatrizRadar,1));
+% n_bt = ceil(size(MatrizRadar,1)*1e9/fs);
+% pulso(1:n_bt) = ones;
+% 
+% f = zeros(1,1e9); 
+% f(:);
+% f(1:1e9/(fs))= f(1:1e9/(fs))+1;
+% 
+% s = zeros(size(f));  
+% s = s(:);                       % Signal in column vector
+% s(201:205) = s(201:205) + 1; 
+% 
+% for i=1:size(MatrizRadar,2)
+%  
+% Hfa=conj(fft(MatrizRadar(:,i)));
+% Yout(:,i)=ifft(fft(MatrizRadar(:,i)).*Hfa);
+% Yshift(:,i)=Yout(:,i);
+% end
 
-%Filtrado en dominio de la frecuencia
-for i=1:size(MatrizRadar,2)
- 
-Hfa=conj(fft(MatrizRadar(:,i)));
-Yout(:,i)=ifft(fft(MatrizRadar(:,i)).*Hfa);
-Yshift(:,i)=Yout(:,i);
-end
-
-% Matriz tras filtro adaptado
-figure(1)
-pcolor(20*log10(abs(Yshift)))
-set(gca, 'YDir', 'normal');
-colormap('jet')
-c=colorbar;
-c.Label.String = 'Amplitud (V)';
-c.Label.FontSize = 11;
-title('Radar Pulsado: Filtro adaptado')
-xlabel('Slot')
-ylabel('Distancia (m)')
-shading flat
+% % Matriz tras filtro adaptado
+% figure(1)
+% pcolor(20*log10(abs(Yshift)))
+% set(gca, 'YDir', 'normal');
+% colormap('jet')
+% c=colorbar;
+% c.Label.String = 'Amplitud (V)';
+% c.Label.FontSize = 11;
+% title('Radar Pulsado: Filtro adaptado')
+% xlabel('Slot')
+% ylabel('Distancia (m)')
+% shading flat
 
 %% Diezmado
 
 % Diezmado 22 (2 muestras en vez de 44)
 % aux = movsum(MatrizRadar, 22, 1);
 % output= aux(:,1:22:end);
-matrizDiezmada = MatrizRadar(1:2:end,:);
+% matrizDiezmada = MatrizRadar(1:2:end,:);
 
+Ni=36;
+ for i=1:size(MatrizRadar,2)
+         MatrizRadar_diez(:,i) = filter((1/Ni)*ones(1,Ni),1,MatrizRadar(:,i),[],1);
+    end
+    matrizDiezmada = MatrizRadar_diez((36:Ni:end),:);
+    
 %Diezmado 
 figure(2)
 ejex= linspace(1,1,Np);
-imagesc(ejex,R,(abs(matrizDiezmada)))
+pcolor((abs(matrizDiezmada)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
@@ -138,6 +160,7 @@ c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Radar Pulsado: Submuestreo')
 xlabel('Slot')
+shading flat
 
 %% Cancelador
 
@@ -202,7 +225,7 @@ xlabel('Slot')
 
 %% Módulo + Integrador
 
-MatrizIntegrada= integrador(1, 0,matrizCancelador1,25);
+MatrizIntegrada= integrador(1, 0,matrizCancelador1,2);
 
 % figure(9)
 % colormap jet
