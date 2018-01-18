@@ -164,8 +164,7 @@ figure(6)
 for k=1:size(MatrizIntegrada,2)
   
   subplot(211), plot((abs(MatrizIntegrada(:,k))))
-    grid
-    title('Matriz integrada')
+    title('Matriz cancelada')
     xlabel('muestras')
     ylabel('V')
     axis([1 Nfft*2 0 30 ])

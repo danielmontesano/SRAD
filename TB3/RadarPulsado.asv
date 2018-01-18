@@ -96,6 +96,20 @@ grid
 title('Matriz Radar a pelo')
 shading flat 
 
+%Pantalla tipo B con eje de distancias
+% no me cuadran las distancias con las tomadas en la practic
+
+% figure(2)
+% ejex= linspace(1,1,Np);
+% imagesc(ejex,R,(abs(MatrizRadar)))
+% set(gca, 'YDir', 'normal');
+% colormap('jet')
+% c=colorbar;
+% c.Label.String = 'Amplitud (V)';
+% c.Label.FontSize = 11;
+% title('Radar Pulsado: Submuestreo')
+% xlabel('Slot')
+% ylabel('Distancia (m)')
 
 %% Filtro adaptado
 

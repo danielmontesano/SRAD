@@ -33,9 +33,12 @@ elseif rampa == 2
     avance_maximo = velocidad*(1/fm); %en segundos
 %     Ni = round(resolucion/avance_maximo); %N? de instantes de tiempo que tarda el blanco en desplazarse una celda de resoluci€n
 
-for i=1:size(MatrizModulo,2)
-    MatrizRadar_fR_fT(:,i) = filter((1/Ni)*ones(1,Ni),1,MatrizModulo(:,i),[],2);
-    MatrizIntegrada = MatrizRadar_fR_fT(:,(Ni:end));
+for i=1:size(MatrizModulo,1)
+    %MatrizRadar_fR_fT(:,i) = filter((1/Ni)*ones(1,Ni),1,MatrizModulo(:,i),[],2);
+    %MatrizIntegrada = MatrizRadar_fR_fT(:,(Ni:end));
+    
+    MatrizRadar_fR_fT(i,:) = filter((1/Ni)*ones(1,Ni),1,MatrizModulo(i,:),[],2);
+    MatrizIntegrada = MatrizRadar_fR_fT((Ni:end),:);
 end
     
 end
