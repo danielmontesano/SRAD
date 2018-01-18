@@ -1,10 +1,10 @@
-function [MatrizIntegrada] = integrador(pulsado_fmcw,rampa,  MatrizInput, Ni)
+function [MatrizIntegrada] = integrador(pulsado_fmcw, MatrizInput, Ni)
 
 % ojo con el conjugado de la matriz
 MatrizModulo = abs(MatrizInput);
 velocidad = 0.3; % 30 cm/s
 
-if pulsado_fmcw ==1 && rampa==0
+if pulsado_fmcw ==1 
   
     PRF=288;
     T=1/PRF;
@@ -16,10 +16,8 @@ if pulsado_fmcw ==1 && rampa==0
      
     for i=1:size(MatrizModulo,2)
          MatrizRadar_fR_fT(:,i) = filter((1/Ni)*ones(1,Ni),1,MatrizModulo(:,i),[],2);
-    %     [fila_aux columna_aux] = size(MatrizRadar_fR_fT);
-         MatrizIntegrada = MatrizRadar_fR_fT((Ni:end),:);
+         MatrizIntegrada = MatrizRadar_fR_fT(:,(Ni:end));
     end
-
 elseif pulsado_fmcw ==2
     
 

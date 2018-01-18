@@ -210,17 +210,28 @@ ylabel('Distancia (m)')
 
 %% Módulo + Integrador
 
-MatrizIntegrada= integrador(1,0, matrizCancelador1,5);
+MatrizIntegrada= integrador(1, matrizCancelador1,2);
+
+% figure(9)
+% colormap jet
+% pcolor(((MatrizIntegrada)))
+% colorbar
+% xlabel('tiempo lento')
+% ylabel('tiempo rapido')
+% title('Matriz integrada')
+% grid
+% shading flat 
 
 figure(9)
-colormap jet
-pcolor(((MatrizIntegrada)))
-colorbar
-xlabel('tiempo lento')
-ylabel('tiempo rapido')
+pcolor((MatrizIntegrada))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+c.Label.String = 'Amplitud (V)';
+c.Label.FontSize = 11;
 title('Matriz integrada')
-grid
-shading flat 
-
+xlabel('Slot')
+ylabel('Distancia (m)')
+shading flat
 
 
