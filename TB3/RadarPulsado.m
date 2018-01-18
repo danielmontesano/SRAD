@@ -210,7 +210,7 @@ ylabel('Distancia (m)')
 
 %% Módulo + Integrador
 
-MatrizIntegrada= integrador(1,0, matrizCancelador1);
+MatrizIntegrada= integrador(1,0, matrizCancelador1,5);
 
 figure(9)
 colormap jet
