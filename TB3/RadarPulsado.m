@@ -213,7 +213,7 @@ shading flat
 
 %% Módulo + Integrador
 
-MatrizIntegrada= integrador(1, 0,matrizCancelador1,2);
+MatrizIntegrada= integrador(1, 0,matrizCancelador1,25);
 
 % figure(9)
 % colormap jet
