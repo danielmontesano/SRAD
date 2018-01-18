@@ -102,10 +102,6 @@ end
 
 MatrizCancelada=cancelador(2,MatrizRadar_hamm);
 MatrizRadar_h_fft= fft(MatrizCancelada);
-
-%% Integrador
-MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,19);
-
 %% Representación Matriz recibida
 figure(2)
 colormap jet
@@ -127,37 +123,10 @@ xlabel('tiempo lento')
 grid
 shading flat 
 
-% figure(4)
-% for k=1:size(MatrizCancelada,2)
-%   
-%   subplot(211), plot((abs(MatrizRadar(:,k))))
-%     xlabel('muestras')
-%     ylabel('V')
-%     axis([1 Nfft*2 0 30 ])
-%     
-%     subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
-%     grid
-%     xlabel('muestras')
-%     ylabel('V')
-%     axis([1 Nfft*2 0 30 ])
-%     
-%  pause(.01)
-% end
-%% Representación Cancelador + Integrador
-figure(5)
-colormap jet
-pcolor((abs(MatrizIntegrada)))
-title('Matriz con enventanado Hamming + cancelador+ integrador')
-colorbar
-ylabel('tiempo r?pido')
-xlabel('tiempo lento')
-grid
-shading flat 
-
-figure(6)
-for k=1:size(MatrizIntegrada,2)
+figure(4)
+for k=1:size(MatrizCancelada,2)
   
-  subplot(211), plot((abs(MatrizIntegrada(:,k))))
+  subplot(211), plot((abs(MatrizRadar(:,k))))
     xlabel('muestras')
     ylabel('V')
     axis([1 Nfft*2 0 30 ])
