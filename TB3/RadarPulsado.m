@@ -7,18 +7,18 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C\CANAL_I_2.mat');
-% load('G_C\CANAL_I_SCAN_3.mat');
-% load('G_C\CANAL_I_SCANTRACK_4.mat');
+% load('G_C\CANAL_I_2.mat'); YoffsetD= 306;
+% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;
+load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;
 A=src1.Data;
 A=double(A);
 
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C\CANAL_Q_2.mat');
+% load('G_C\CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
-% load('G_C\CANAL_Q_SCANTRACK_4.mat');
+load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -90,16 +90,47 @@ MatrizRadar=MatrizRadar';
 
 %% Pantalla Tipo B
 
-figure(7)
- colormap jet
-pcolor((abs(MatrizRadar)))
-colorbar
-xlabel('tiempo lento')
-ylabel('tiempo rapido')
-grid
-title('Matriz Radar a pelo')
-shading flat 
+% figure(7)
+%  colormap jet
+% pcolor((abs(MatrizRadar)))
+% colorbar
+% xlabel('tiempo lento')
+% ylabel('tiempo rapido')
+% grid
+% title('Matriz Radar a pelo')
+% shading flat 
+% 
+% 
+% disp('Seleccionar distancia blanco 1')
+% [XoffsetD, YoffsetD] = ginput(1);
+% % aux = find(R>YoffsetD);%Averiguamos el indice de ese ofset
+% % indexD = aux(1);
+% disp('Seleccionar distancia pared')
+% [XoffsetD, YoffsetPared] = ginput(1);
+pared = 8.15;
+blanco1= 2.63;
+% YoffsetD=YoffsetD; %correccion para que no quede pegado el blanco al origen
 
+MatrizRadar = circshift(MatrizRadar,-round(YoffsetD-100),1);%Recortamos la matriz radar
+span=7.2;
+paso = span/size(MatrizRadar,1);
+% paso = abs((pared-blanco1)/max([(-YoffsetPared+YoffsetD-size(MatrizRadar,1)) -YoffsetPared+YoffsetD]))
+% inicio = blanco1-paso*round(100);
+% final = pared + paso*(size(MatrizRadar,1)-YoffsetPared+YoffsetD+100);
+distancias = linspace(2, 9.2, size(MatrizRadar,1));
+
+% N = length(MatrizRadar(:,1));%Numero de muestras
+% Rmax = (N/fs)*3e8/2;
+ejex= linspace(1,1,Np);
+figure(7)
+imagesc(ejex,distancias,(abs(MatrizRadar)))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+c.Label.String = 'Amplitud (V)';
+c.Label.FontSize = 11;
+title('Radar Pulsado: cancelador cero')
+xlabel('Slot')
 
  %% Filtro adaptado
 % 
