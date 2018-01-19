@@ -236,11 +236,7 @@ ylabel('Distancia (m)')
 shading flat
 
 
-ylabel('Distancia (m)')
-shading flat
-
 
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
 
-ylabel('Distancia(m)')
