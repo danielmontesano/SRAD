@@ -68,7 +68,7 @@ for k=1:NPER
 %     subplot(211),plot(1:Nfft,Moduladora(k,:),...
 %         1:Nfft,(MatrizRadar(k,:)),'k')
 %     grid
-%   title('Modulo AZUL MODULADORA    NEGRO señal de batido')
+%   title('Modulo AZUL MODULADORA    NEGRO seï¿½al de batido')
 %     xlabel('muestras')
 %     ylabel('V')
 %     axis([1 Nfft -2 12 ])
@@ -110,13 +110,20 @@ end
 
 MatrizCancelada=cancelador(2,MatrizRadar_hamm);
 MatrizRadar_h_fft= fft(MatrizCancelada);
+%% Diezmado
 
+Ndiez=18;
+ for i=1:size(MatrizRadar_h_fft,2)
+         MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,MatrizRadar_h_fft(:,i),[],1);
+    end
+    matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
+    
 %% Integrador
 
 MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,Ni);
 
 
-%% Representación Matriz recibida (en crudo)
+%% Representaciï¿½n Matriz recibida (en crudo)
 
 
 figure(2)
@@ -129,7 +136,7 @@ xlabel('tiempo lento')
 grid
 shading flat 
 
-%% Representación Matriz Cancelada
+%% Representaciï¿½n Matriz Cancelada
 figure(3)
 colormap jet
 pcolor((abs(MatrizRadar_h_fft)))
@@ -156,7 +163,7 @@ shading flat
 %     
 %  pause(.01)
 % end
-%% Representación Cancelador + Integrador
+%% Representaciï¿½n Cancelador + Integrador
 
 figure(5)
 colormap jet
