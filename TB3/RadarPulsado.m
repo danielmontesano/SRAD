@@ -7,8 +7,8 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C\CANAL_I_2.mat'); YoffsetD= 306;Ni= 144;
-load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
+load('G_C\CANAL_I_2.mat'); YoffsetD= 306;Ni= 144;
+% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
 % load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;
 A=double(A);
@@ -16,8 +16,8 @@ A=double(A);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C\CANAL_Q_2.mat');
-load('G_C\CANAL_Q_SCAN_3.mat');
+load('G_C\CANAL_Q_2.mat');
+% load('G_C\CANAL_Q_SCAN_3.mat');
 % load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
@@ -87,6 +87,7 @@ end
 
 MatrizRadar=MatrizRadar';
 
+% MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
 
 %% Pantalla Tipo B
 
@@ -172,9 +173,9 @@ xlabel('Slot')
 
 Ndiez=36;
  for i=1:size(MatrizRadar,2)
-         MatrizRadar_diez(:,i) = filter((1/Nidiez)*ones(1,Nidiez),1,MatrizRadar(:,i),[],1);
+         MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,MatrizRadar(:,i),[],1);
     end
-    matrizDiezmada = MatrizRadar_diez((Nidiez:Nidiez:end),:);
+    matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
     
 %Diezmado 
 figure(2)
