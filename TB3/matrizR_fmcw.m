@@ -10,7 +10,9 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -35; Ni = 11% los datos de plots
+% load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -35; Ni = 11;% los datos de plots
+% load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 11;% los datos de plots
+load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 11;%
 
 
 A=src1.Data;
@@ -28,7 +30,9 @@ end
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
-load ('G_C/CANAL2_2GHZ_FM_5.mat');
+% load ('G_C/CANAL2_2GHZ_FM_5.mat');
+% load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
+load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
 B=src1.Data;
 B=double(B);
