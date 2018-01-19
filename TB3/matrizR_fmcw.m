@@ -100,6 +100,7 @@ distancias = linspace(0,Rmax,size(MatrizRadar,1));
 pared = find(distancias>8.15);
 pared = pared(1);
 MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
+ejex= linspace(1,1,Np);
 
 %% Cancelador + enventanado
 
@@ -131,25 +132,36 @@ MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,Ni);
 
 
 figure(2)
-colormap jet
-pcolor(((abs(filter([1 0 ],1,MatrizRadar)))))
+imagesc(ejex,distancias,20*log(abs(filter([1 0 ],1,MatrizRadar))))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([0 80])
+
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
+
 title('VENTANA RECTANGULAR')
-colorbar
-ylabel('tiempo rapido')
-xlabel('tiempo lento')
 grid
 shading flat 
 
 %% Representaci�n Matriz Cancelada
 figure(3)
-colormap jet
-pcolor((abs(MatrizRadar_h_fft)))
-title('Matriz con enventanado Hamming + cancelador')
-colorbar
-ylabel('tiempo r?pido')
-xlabel('tiempo lento')
+imagesc(ejex,distancias,20*log(abs(MatrizRadar_h_fft)))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([-10 50])
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
 grid
 shading flat 
+title('Matriz con enventanado Hamming + cancelador')
+
 
 % figure(4)
 % for k=1:size(MatrizCancelada,2)
@@ -170,16 +182,23 @@ shading flat
 %% Representaci�n Cancelador + Integrador
 
 figure(5)
-colormap jet
-pcolor((abs(MatrizIntegrada)))
-title('Matriz con enventanado Hamming + cancelador+ integrador')
-colorbar
-ylabel('tiempo r?pido')
-xlabel('tiempo lento')
+imagesc(ejex,distancias,20*log(abs(MatrizRadar)))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([0 80])
+
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
+
 grid
 shading flat 
+title('Matriz con enventanado Hamming + cancelador+ integrador')
 
-figure(6)
+
+% figure(6)
 % for k=1:size(MatrizIntegrada,2)
 %   
 %   subplot(211), plot((abs(MatrizIntegrada(:,k))))
