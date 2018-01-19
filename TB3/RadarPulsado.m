@@ -29,11 +29,6 @@ Np=floor(fs/PRF);              % N?mero entero de celdas en tiempo r?pido,
                                % Nivel inferior, los blancos se adelantar?n
 R= 0:7.2/Np:7.2;                % Vector de distancias con span 7.2
 
-deltaR = 0.15; % metros
-deltaR_smuestr = 7.2/N;
-sobremuestreo = round(deltaR/deltaR_smuestr);
-
-
 
 M=round(max(size(A))/Np)-10;   % N?mero de celdas en tiempo lento que se procesan (quito 10)
 
@@ -91,37 +86,13 @@ MatrizRadar=MatrizRadar';
 
 %% Pantalla Tipo B
 
-% figure(7)
-%  colormap jet
-% pcolor((abs(MatrizRadar)))
-% colorbar
-% xlabel('tiempo lento')
-% ylabel('tiempo rapido')
-% grid
-% title('Matriz Radar a pelo')
-% shading flat 
-% 
-% 
-% disp('Seleccionar distancia blanco 1')
-% [XoffsetD, YoffsetD] = ginput(1);
-% % aux = find(R>YoffsetD);%Averiguamos el indice de ese ofset
-% % indexD = aux(1);
-% disp('Seleccionar distancia pared')
-% [XoffsetD, YoffsetPared] = ginput(1);
 pared = 8.15;
 blanco1= 2.63;
-% YoffsetD=YoffsetD; %correccion para que no quede pegado el blanco al origen
 
 MatrizRadar = circshift(MatrizRadar,-round(YoffsetD-100),1);%Recortamos la matriz radar
 span=7.2;
 paso = span/size(MatrizRadar,1);
-% paso = abs((pared-blanco1)/max([(-YoffsetPared+YoffsetD-size(MatrizRadar,1)) -YoffsetPared+YoffsetD]))
-% inicio = blanco1-paso*round(100);
-% final = pared + paso*(size(MatrizRadar,1)-YoffsetPared+YoffsetD+100);
 distancias = linspace(2, 9.2, size(MatrizRadar,1));
-
-% N = length(MatrizRadar(:,1));%Numero de muestras
-% Rmax = (N/fs)*3e8/2;
 ejex= linspace(1,1,Np);
 
 figure(1)
@@ -133,62 +104,36 @@ c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Radar Pulsado: cancelador cero')
 xlabel('Slot')
+ylabel('Distancia(m)')
 
- %% Filtro adaptado
-% 
-% %Filtrado en dominio de la frecuencia
-% pulso = zeros(1,size(MatrizRadar,1));
-% n_bt = ceil(size(MatrizRadar,1)*1e9/fs);
-% pulso(1:n_bt) = ones;
-% 
-% f = zeros(1,1e9); 
-% f(:);
-% f(1:1e9/(fs))= f(1:1e9/(fs))+1;
-% 
-% s = zeros(size(f));  
-% s = s(:);                       % Signal in column vector
-% s(201:205) = s(201:205) + 1; 
-% 
-% for i=1:size(MatrizRadar,2)
-%  
-% Hfa=conj(fft(MatrizRadar(:,i)));
-% Yout(:,i)=ifft(fft(MatrizRadar(:,i)).*Hfa);
-% Yshift(:,i)=Yout(:,i);
-% end
 
-% % Matriz tras filtro adaptado
-% figure(1)
-% pcolor(20*log10(abs(Yshift)))
-% set(gca, 'YDir', 'normal');
-% colormap('jet')
-% c=colorbar;
-% c.Label.String = 'Amplitud (V)';
-% c.Label.FontSize = 11;
-% title('Radar Pulsado: Filtro adaptado')
-% xlabel('Slot')
-% ylabel('Distancia (m)')
-% shading flat
-
-%% Diezmado
-
+%% Filtrado y Diezmado
+% Filtro
 Ndiez=36;
  for i=1:size(MatrizRadar,2)
          MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,MatrizRadar(:,i),[],1);
-    end
-    matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
+ end
+%Diezmado
+matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
     
-%Diezmado 
+%Representacion 
 figure(2)
-ejex= linspace(1,1,Np);
-pcolor((abs(matrizDiezmada)))
+imagesc(ejex,distancias,(abs(matrizDiezmada)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Radar Pulsado: Submuestreo')
+title('Filtrado y diezmado')
 xlabel('Slot')
-shading flat
+ylabel('Distancia(m)')
+
+%Cï¿½lculo de clutter
+ScanceladorIN=0.39; %Naturales
+CcanceladorIN=0.2488;
+NcanceladorIN=0.06748;
+SC_in=20*log10(ScanceladorIN/CcanceladorIN);
+
 
 %% Cancelador
 
@@ -196,82 +141,101 @@ shading flat
 figure(3)
 matrizCancelador1 = cancelador(1,matrizDiezmada);
 
-imagesc(ejex,R,(abs(matrizCancelador1)))
+imagesc(ejex,distancias,(abs(matrizCancelador1)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Radar Pulsado: cancelador simple')
+title('Cancelador Simple')
 xlabel('Slot')
+ylabel('Distancia(m)')
+
+ScanceladorOUT_1=0.06284;
+CcanceladorOUT_1=0.002181;
+SC_cancelador1_out=20*log10(ScanceladorOUT_1/CcanceladorOUT_1);
 
 %Cancelador doble
 figure(4)
 matrizCancelador2 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,R,(abs(matrizCancelador2)))
+imagesc(ejex,distancias,(abs(matrizCancelador2)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Radar Pulsado: cancelador doble')
+title('Cancelador Doble')
 xlabel('Slot')
+ylabel('Distancia(m)')
+
+ScanceladorOUT_2=0.01059;
+CcanceladorOUT_2=0.0007926;
+SC_cancelador2_out=20*log10(ScanceladorOUT_2/CcanceladorOUT_2);
 
 %Cancelador triple
 figure(5)
 matrizCancelador3 = cancelador(3,matrizDiezmada);
 
-imagesc(ejex,R,(abs(matrizCancelador3)))
+imagesc(ejex,distancias,(abs(matrizCancelador3)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Radar Pulsado: cancelador triple')
+title('Cancelador Triple')
 xlabel('Slot')
+ylabel('Distancia(m)')
+
+ScanceladorOUT_3=0.005101;
+CcanceladorOUT_3=0.001387;
+SC_cancelador3_out=20*log10(ScanceladorOUT_3/CcanceladorOUT_3);
 
 %Cancelador cero
 
 figure(6)
 matrizCancelador0 = cancelador(0,matrizDiezmada);
 
-imagesc(ejex,R,(abs(matrizCancelador0)))
+imagesc(ejex,distancias,(abs(matrizCancelador0)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Radar Pulsado: cancelador cero')
+title('Cancelador Cero')
 xlabel('Slot')
+ylabel('Distancia(m)')
 
-
-%% Módulo + Integrador
+%% Mï¿½dulo + Integrador
 
 Ni_quieto= 144;
 Ni_scan=24;
 Ni_scantrack=18;
 
+RC1=CcanceladorOUT_1;
+RC2=CcanceladorOUT_2;
+RC3=CcanceladorOUT_3;
+
+Imti_cancelador1= SC_cancelador1_out-SC_in;
+Imti_cancelador2= SC_cancelador2_out-SC_in;
+Imti_cancelador3= SC_cancelador3_out-SC_in;
+% Nos quedamos con el cancelador 1
+
 MatrizIntegrada= integrador(1, 0,matrizCancelador1,Ni);
 
-% figure(9)
-% colormap jet
-% pcolor(((MatrizIntegrada)))
-% colorbar
-% xlabel('tiempo lento')
-% ylabel('tiempo rapido')
-% title('Matriz integrada')
-% grid
-% shading flat 
-
 figure(7)
-pcolor((MatrizIntegrada))
+imagesc(ejex,distancias,(abs(MatrizIntegrada)))
+set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
-title('Matriz integrada')
+title('Integrador')
 xlabel('Slot')
+ylabel('Distancia (m)')
+shading flat
+
+
 ylabel('Distancia (m)')
 shading flat
 
@@ -279,3 +243,4 @@ shading flat
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
 
+ylabel('Distancia(m)')
