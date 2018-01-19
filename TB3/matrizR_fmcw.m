@@ -10,21 +10,21 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = 182; % los datos de plots
+load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -35; Ni = 11% los datos de plots
 
 
 A=src1.Data;
 A=double(A);
 Sincro=diff(filter(ones(1,50),1,(A>5))>10);
-% Do=find(Sincro==1);    %rampa ascendente
-Do=find(Sincro==-1);     %rampa descendente
+Do=find(Sincro==1);    %rampa ascendente
+%Do=find(Sincro==-1);     %rampa descendente
 if Do(1)<1000
     D1=Do(2:end);
     Do=[];
     Do=D1;
 end
-% Do=Do;                 %retardo del filtro rampa ascendente   
-Do=Do-40;                %retardo del filtro rampa descendente
+ Do=Do;                 %retardo del filtro rampa ascendente   
+%Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
@@ -42,10 +42,10 @@ fm=fs/N*(find(FG==max(FG),1)-1);%Frecuencia de la moduladora
                                 %Estimada con los datos, la FFT y tomando como referencia fs
 Np=floor(fs/fm)+2;
 
-% Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+ Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Ascendente, este par?metro lo puede
                                 % ajustar
-Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+%Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Descendente, este par?metro lo puede
                                 % ajustar                  
 Nfft=round(fs*Tm1);             % N?mero  de muestras en tiempo r?pido
@@ -78,8 +78,8 @@ for k=1:NPER
 %     xlabel('muestras')
 %     ylabel('dB')
 %     axis([1 Nfft*4 0 40 ])
-    
- pause(.01)
+%     
+%  pause(.01)
    
 end
 
@@ -89,6 +89,13 @@ end
 MatrizRadar=[];
 MatrizRadar=MatrizRadarfft(:,1:4*Nfft/2);
 MatrizRadar=MatrizRadar';
+
+BW = 2e9;
+Rmax = (fs/2)*Tm1*3e8/(BW*2);
+distancias = linspace(0,Rmax,size(MatrizRadar,1));
+pared = find(distancias>8.15);
+pared = pared(1);
+MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
 
 %% Cancelador + enventanado
 
@@ -106,16 +113,11 @@ MatrizRadar_h_fft= fft(MatrizCancelada);
 
 %% Integrador
 
-MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,19);
+MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,Ni);
 
 
 %% Representación Matriz recibida (en crudo)
-BW = 2e9;
-Rmax = fs*Tm1*3e8/(BW*2);
-distancias = linspace(0,Rmax,size(MatrizRadar,1));
-puerta = find(distancias>8.15);
-puerta = puerta(1);
-MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
+
 
 figure(2)
 colormap jet
@@ -167,21 +169,21 @@ grid
 shading flat 
 
 figure(6)
-for k=1:size(MatrizIntegrada,2)
-  
-  subplot(211), plot((abs(MatrizIntegrada(:,k))))
-    grid
-    title('Matriz integrada')
-    xlabel('muestras')
-    ylabel('V')
-    axis([1 Nfft*2 0 10 ])
-    
-    subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
-    grid
-     title('Matriz cancelada')
-    xlabel('muestras')
-    ylabel('V')
-    axis([1 Nfft*2 0 10 ])
-    
- pause(.01)
-end
+% for k=1:size(MatrizIntegrada,2)
+%   
+%   subplot(211), plot((abs(MatrizIntegrada(:,k))))
+%     grid
+%     title('Matriz integrada')
+%     xlabel('muestras')
+%     ylabel('V')
+%     axis([1 Nfft*2 0 10 ])
+%     
+%     subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
+%     grid
+%      title('Matriz cancelada')
+%     xlabel('muestras')
+%     ylabel('V')
+%     axis([1 Nfft*2 0 10 ])
+%     
+%  pause(.01)
+% end

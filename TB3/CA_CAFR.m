@@ -35,7 +35,7 @@ ylabel('Log1(Pfa)')
 end
 %%
 figure(11)
-imagesc((MatrizEntrada>0.28*Umbral))
+imagesc((MatrizEntrada>0.5*Umbral))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
