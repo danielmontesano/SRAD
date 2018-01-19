@@ -12,7 +12,7 @@ close all
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
 % load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -35; Ni = 11;% los datos de plots
 % load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 11;% los datos de plots
-load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 11;%
+load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 11; escala = 0.3;%
 
 
 A=src1.Data;
@@ -153,7 +153,7 @@ imagesc(ejex,distancias,20*log(abs(MatrizRadar_h_fft)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-10 50])
+caxis([-30 50])
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;
 xlabel('Slot')
@@ -196,6 +196,9 @@ ylabel('Distancia(m)')
 grid
 shading flat 
 title('Matriz con enventanado Hamming + cancelador+ integrador')
+
+
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
 
 % figure(6)

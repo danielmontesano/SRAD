@@ -1,3 +1,4 @@
+function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
 MatrizEntrada = MatrizIntegrada;
 m = 4;
@@ -7,6 +8,8 @@ g = 2;
 % Matriz2=MatrizEntrada(4:end,:);
 % Vec = zeros(1,15)';
 % Vec(8) = 1;
+
+    
 CA_CFAR_filter = [ones(1,m/2) zeros(1,g/2) 0 zeros(1,g/2) ones(1,m/2)];
 
 Umbral = filter(CA_CFAR_filter,1,MatrizEntrada,[],1);
@@ -35,13 +38,13 @@ ylabel('Log1(Pfa)')
 end
 %%
 figure(11)
-imagesc((MatrizEntrada>0.5*Umbral))
+
+imagesc(ejex,distancias,(MatrizEntrada>escala*Umbral))
 set(gca, 'YDir', 'normal');
 colormap('jet')
-c=colorbar;
-c.Label.String = 'Amplitud (V)';
-c.Label.FontSize = 11;
-title('CAFR')
 xlabel('Slot')
-ylabel('Distancia (m)')
-% shading flat
+ylabel('Distancia(m)')
+title('CAFR')
+
+grid
+shading flat 

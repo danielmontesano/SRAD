@@ -1,13 +1,13 @@
 clear all
 close all
 
-load('G_C\DIENTE_ASCOPE_1.mat');
+load('G_C/DIENTE_ASCOPE_1.mat');
 D=src1.Data;
 D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C\CANAL_I_2.mat'); YoffsetD= 306;Ni= 144;
+load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.29;
 % load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
 % load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;
@@ -16,7 +16,7 @@ A=double(A);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C\CANAL_Q_2.mat');
+load('G_C/CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
 % load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
@@ -45,7 +45,7 @@ offsetR=500;                   % Celda inicial para la formaci?n de la matriz, c
   cont1=0;                     % Contador para ajuste fino del instante de la primera muestra
 
   NPER=M;
-  K=4;                         % Para ajustar con poco tiempo de ejecuci?n K=4   
+  K=1;                         % Para ajustar con poco tiempo de ejecuci?n K=4   
 %        figure(100)                        % Fichero completo K=1
 % Quitar el offset
 for k=1:NPER/K
@@ -87,7 +87,7 @@ end
 
 MatrizRadar=MatrizRadar';
 
-% MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
+ %MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
 
 %% Pantalla Tipo B
 
@@ -274,5 +274,8 @@ title('Matriz integrada')
 xlabel('Slot')
 ylabel('Distancia (m)')
 shading flat
+
+
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
 
