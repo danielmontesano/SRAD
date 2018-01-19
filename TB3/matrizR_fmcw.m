@@ -10,9 +10,9 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-% load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -35; Ni = 11;% los datos de plots
-% load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 11;% los datos de plots
-load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 11; escala = 0.3;%
+% load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -; Ni = 11;escala = 0.3;% los datos de plots
+% load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 4;escala = 0.3;% los datos de plots
+load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.3;%
 
 
 A=src1.Data;
@@ -102,6 +102,9 @@ pared = pared(1);
 MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
 ejex= linspace(1,1,Np);
 
+deltaR = 2*3e8/BW;
+Nceldas = Rmax/deltaR;
+
 %% Cancelador + enventanado
 
 wh_mat= hamming(size(MatrizRadar,1));
@@ -117,11 +120,11 @@ MatrizCancelada=cancelador(2,MatrizRadar_hamm);
 MatrizRadar_h_fft= fft(MatrizCancelada);
 %% Diezmado
 
-Ndiez=18;
+Ndiez=round(size(MatrizRadar_h_fft,2)/Nceldas);
  for i=1:size(MatrizRadar_h_fft,2)
          MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,MatrizRadar_h_fft(:,i),[],1);
     end
-    matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
+ matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
     
 %% Integrador
 
