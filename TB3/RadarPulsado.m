@@ -7,9 +7,9 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C\CANAL_I_2.mat'); YoffsetD= 306;
-% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;
-load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;
+% load('G_C\CANAL_I_2.mat'); YoffsetD= 306;Ni= 144;
+load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
+% load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;
 A=double(A);
 
@@ -17,8 +17,8 @@ A=double(A);
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
 % load('G_C\CANAL_Q_2.mat');
-% load('G_C\CANAL_Q_SCAN_3.mat');
-load('G_C\CANAL_Q_SCANTRACK_4.mat');
+load('G_C\CANAL_Q_SCAN_3.mat');
+% load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -122,7 +122,8 @@ distancias = linspace(2, 9.2, size(MatrizRadar,1));
 % N = length(MatrizRadar(:,1));%Numero de muestras
 % Rmax = (N/fs)*3e8/2;
 ejex= linspace(1,1,Np);
-figure(7)
+
+figure(1)
 imagesc(ejex,distancias,(abs(MatrizRadar)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
@@ -169,16 +170,11 @@ xlabel('Slot')
 
 %% Diezmado
 
-% Diezmado 22 (2 muestras en vez de 44)
-% aux = movsum(MatrizRadar, 22, 1);
-% output= aux(:,1:22:end);
-% matrizDiezmada = MatrizRadar(1:2:end,:);
-
-Ni=36;
+Ndiez=36;
  for i=1:size(MatrizRadar,2)
-         MatrizRadar_diez(:,i) = filter((1/Ni)*ones(1,Ni),1,MatrizRadar(:,i),[],1);
+         MatrizRadar_diez(:,i) = filter((1/Nidiez)*ones(1,Nidiez),1,MatrizRadar(:,i),[],1);
     end
-    matrizDiezmada = MatrizRadar_diez((36:Ni:end),:);
+    matrizDiezmada = MatrizRadar_diez((Nidiez:Nidiez:end),:);
     
 %Diezmado 
 figure(2)
@@ -249,14 +245,13 @@ title('Radar Pulsado: cancelador cero')
 xlabel('Slot')
 
 
-
-
-
-
-
 %% Módulo + Integrador
 
-MatrizIntegrada= integrador(1, 0,matrizCancelador1,2);
+Ni_quieto= 144;
+Ni_scan=24;
+Ni_scantrack=18;
+
+MatrizIntegrada= integrador(1, 0,matrizCancelador1,Ni);
 
 % figure(9)
 % colormap jet
@@ -268,9 +263,8 @@ MatrizIntegrada= integrador(1, 0,matrizCancelador1,2);
 % grid
 % shading flat 
 
-figure(8)
+figure(7)
 pcolor((MatrizIntegrada))
-set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
 c.Label.String = 'Amplitud (V)';

@@ -174,14 +174,14 @@ for k=1:size(MatrizIntegrada,2)
     title('Matriz integrada')
     xlabel('muestras')
     ylabel('V')
-    axis([1 Nfft*2 0 30 ])
+    axis([1 Nfft*2 0 10 ])
     
     subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
     grid
      title('Matriz cancelada')
     xlabel('muestras')
     ylabel('V')
-    axis([1 Nfft*2 0 30 ])
+    axis([1 Nfft*2 0 10 ])
     
  pause(.01)
 end
