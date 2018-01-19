@@ -7,7 +7,7 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.29;
+load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
 % load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
 % load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;

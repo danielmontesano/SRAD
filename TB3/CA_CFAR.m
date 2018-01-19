@@ -44,7 +44,7 @@ set(gca, 'YDir', 'normal');
 colormap('jet')
 xlabel('Slot')
 ylabel('Distancia(m)')
-title('CAFR')
+title('CFAR')
 
 grid
 shading flat 
