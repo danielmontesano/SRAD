@@ -103,10 +103,17 @@ end
 
 MatrizCancelada=cancelador(2,MatrizRadar_hamm);
 MatrizRadar_h_fft= fft(MatrizCancelada);
+%% Diezmado
 
+Ndiez=18;
+ for i=1:size(MatrizRadar_h_fft,2)
+         MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,MatrizRadar_h_fft(:,i),[],1);
+    end
+    matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
+    
 %% Integrador
 
-MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,19);
+MatrizIntegrada= integrador(2,2,matrizDiezmada,19);
 
 
 %% Representación Matriz recibida (en crudo)
@@ -166,22 +173,22 @@ xlabel('tiempo lento')
 grid
 shading flat 
 
-figure(6)
-for k=1:size(MatrizIntegrada,2)
-  
-  subplot(211), plot((abs(MatrizIntegrada(:,k))))
-    grid
-    title('Matriz integrada')
-    xlabel('muestras')
-    ylabel('V')
-    axis([1 Nfft*2 0 10 ])
-    
-    subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
-    grid
-     title('Matriz cancelada')
-    xlabel('muestras')
-    ylabel('V')
-    axis([1 Nfft*2 0 10 ])
-    
- pause(.01)
-end
+% figure(6)
+% for k=1:size(MatrizIntegrada,2)
+%   
+%   subplot(211), plot((abs(MatrizIntegrada(:,k))))
+%     grid
+%     title('Matriz integrada')
+%     xlabel('muestras')
+%     ylabel('V')
+%     axis([1 Nfft*2 0 10 ])
+%     
+%     subplot(212),plot((abs(MatrizRadar_h_fft(:,k))))
+%     grid
+%      title('Matriz cancelada')
+%     xlabel('muestras')
+%     ylabel('V')
+%     axis([1 Nfft*2 0 10 ])
+%     
+%  pause(.01)
+% end
