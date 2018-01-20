@@ -7,18 +7,18 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
+% load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
 % load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
-% load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
+load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;
 A=double(A);
 
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C/CANAL_Q_2.mat');
+% load('G_C/CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
-% load('G_C\CANAL_Q_SCANTRACK_4.mat');
+load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -169,8 +169,8 @@ imagesc(ejex,distancias,(20*log10(abs(matrizCancelador1))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-50 -10])
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Simple')
 xlabel('Slot')
@@ -188,8 +188,8 @@ imagesc(ejex,distancias,(20*log10(abs(matrizCancelador2))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-50 -10])
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Doble')
 xlabel('Slot')
@@ -207,8 +207,8 @@ imagesc(ejex,distancias,(20*log10(abs(matrizCancelador3))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-50 -10])
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Triple')
 xlabel('Slot')
