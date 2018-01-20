@@ -221,7 +221,7 @@ Imti_cancelador2= SC_cancelador2_out-SC_in;
 Imti_cancelador3= SC_cancelador3_out-SC_in;
 % Nos quedamos con el cancelador 1
 
-MatrizIntegrada= integrador(1, 0,matrizCancelador1,Ni);
+MatrizIntegrada= integrador(1,matrizCancelador1,Ni);
 
 figure(7)
 imagesc(ejex,distancias,(abs(MatrizIntegrada)))
@@ -235,7 +235,7 @@ xlabel('Slot')
 ylabel('Distancia (m)')
 shading flat
 
-
+%% CFAR
 
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
 
