@@ -10,8 +10,8 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.44;% 0.36 asc los datos de plots
- %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 7;escala = 0.62;% 0.62 desc 
+load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.47;% 0.36 asc los datos de plots
+ %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 7;escala = 0.60;% 0.62 desc 
  %load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 5; escala = 0.72;% 0.7 desc
 
 
@@ -32,7 +32,7 @@ Do=Do-40;                %retardo del filtro rampa descendente
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
 
-  load ('G_C/CANAL2_2GHZ_FM_5.mat');
+ load ('G_C/CANAL2_2GHZ_FM_5.mat');
  %load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
  %load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
@@ -48,7 +48,7 @@ fm=fs/N*(find(FG==max(FG),1)-1);%Frecuencia de la moduladora
                                 %Estimada con los datos, la FFT y tomando como referencia fs
 Np=floor(fs/fm)+2;
 
- %Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+%Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Ascendente, este par?metro lo puede
                                 % ajustar
 Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
@@ -153,21 +153,21 @@ Ndiez=round(size(Matriz_enventanada,1)/Nceldas);
  
 %% Cancelador
 
-%Cancelador simple
-matrizCancelador1 = cancelador(1,matrizDiezmada); 
-
-%Cancelador doble
+%Comparacion comparador
+figure(300); hold on;
+plot(abs(matrizDiezmada(:,200)))
+matrizCancelador1 = cancelador(1,matrizDiezmada);
+plot(abs(matrizCancelador1(:,200)))
 matrizCancelador2 = cancelador(2,matrizDiezmada);
-
-%Cancelador triple
+plot(abs(matrizCancelador2(:,200)))
 matrizCancelador3 = cancelador(3,matrizDiezmada);
-
-
+plot(abs(matrizCancelador3(:,200)))
+legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador triple');
 
     
 %% Integrador
 
-MatrizIntegrada = integrador(2,matrizCancelador1,Ni);
+MatrizIntegrada = integrador(2,matrizCancelador2,Ni);
 
 
 %% CA_CFAR
