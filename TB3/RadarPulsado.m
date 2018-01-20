@@ -82,7 +82,22 @@ end
 
 MatrizRadar=MatrizRadar';
 
- %MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
+% MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
+
+%% Cálculo Ti y n
+
+deltaR = 15;
+v = 30;
+PRF = 288;
+rpm_360 = 12;
+rpm_120 = 16;
+
+theta_antena = 6;
+theta_blanco = 4.77;
+
+n_estatico = round((deltaR/v)*PRF);
+n_360 = round(((theta_blanco+theta_antena)*PRF)/(6*rpm_360));
+n_120 = round(((theta_blanco+theta_antena)*PRF)/(6*rpm_120));
 
 %% Pantalla Tipo B
 
@@ -244,7 +259,7 @@ shading flat
 
 %% CFAR
 
-CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
 
 %% Calculo de potencias medidas y relaciones
 
