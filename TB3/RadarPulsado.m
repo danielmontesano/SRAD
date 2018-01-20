@@ -82,7 +82,7 @@ end
 
 MatrizRadar=MatrizRadar';
 
- %MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
+% MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
 
 %% Pantalla Tipo B
 
@@ -244,7 +244,7 @@ shading flat
 
 %% CFAR
 
-CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
 
 %% Calculo de potencias medidas y relaciones
 

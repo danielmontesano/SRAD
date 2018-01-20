@@ -1,14 +1,8 @@
-function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
+function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni,calcFactorEscala)
 
 MatrizEntrada = MatrizIntegrada;
 m = 4;
 g = 2;
-% Matriz= zeros(3, size(MatrizEntrada,2));
-% Matriz2= [Matriz;MatrizEntrada];
-% Matriz2=MatrizEntrada(4:end,:);
-% Vec = zeros(1,15)';
-% Vec(8) = 1;
-
     
 CA_CFAR_filter = [ones(1,m/2) zeros(1,g/2) 0 zeros(1,g/2) ones(1,m/2)];
 
@@ -17,10 +11,6 @@ Umbral = Umbral(7:end,:); %Se recorta 6 muestras iniciales
 MatrizEntrada = MatrizEntrada(4:end-3,:); %Se recortan 3 por cada lado
 
 %%
-% 
-% FactorDeEscala = 1
-% 
-% if(FactorDeEscala)
 k = 0;
 for T=.1:.01:4
    k = k+1;
@@ -32,20 +22,20 @@ end
 figure(10)
 plot(T_vec,log10(Pfa),'LineWidth',2)
 grid
+title(['Candelador Simple con N_{i}=' num2str(Ni)]) 
 xlabel('Factor de escala')
 ylabel('Log1(Pfa)')
 
 % end
 %%
 figure(11)
-
+    
 imagesc(ejex,distancias,(MatrizEntrada>escala*Umbral))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 xlabel('Slot')
 ylabel('Distancia(m)')
 title('CFAR')
-
 
 grid
 shading flat 
