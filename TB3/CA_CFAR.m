@@ -17,10 +17,10 @@ Umbral = Umbral(7:end,:); %Se recorta 6 muestras iniciales
 MatrizEntrada = MatrizEntrada(4:end-3,:); %Se recortan 3 por cada lado
 
 %%
-
-FactorDeEscala = 1
-
-if(FactorDeEscala)
+% 
+% FactorDeEscala = 1
+% 
+% if(FactorDeEscala)
 k = 0;
 for T=.1:.01:4
    k = k+1;
@@ -35,7 +35,7 @@ grid
 xlabel('Factor de escala')
 ylabel('Log1(Pfa)')
 
-end
+% end
 %%
 figure(11)
 
@@ -46,5 +46,10 @@ xlabel('Slot')
 ylabel('Distancia(m)')
 title('CFAR')
 
+
 grid
 shading flat 
+figure
+ hold on; plot(MatrizEntrada(:,100));plot(escala*Umbral(:,100));
+
+end
