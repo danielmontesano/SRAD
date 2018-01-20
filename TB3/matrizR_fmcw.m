@@ -106,6 +106,22 @@ deltaR = 2*3e8/BW;
 Nceldas = Rmax/deltaR;
 
 
+%% Cálculo Ti y n
+
+deltaR = 7.5;
+v = 30;
+fm = 43.5;
+rpm_360 = 12;
+rpm_120 = 16;
+
+theta_antena = 6;
+theta_blanco = 4.77;
+
+n_estatico = round((deltaR/v)*fm);
+n_360 = round(((theta_blanco+theta_antena)*fm)/(6*rpm_360));
+n_120 = round(((theta_blanco+theta_antena)*fm)/(6*rpm_120));
+
+
 
 %% Cancelador + enventanado
 
