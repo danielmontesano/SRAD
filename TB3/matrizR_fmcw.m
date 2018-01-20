@@ -213,12 +213,14 @@ RC1=CcanceladorOUT_1-CcanceladorIN_1;
 RC2=CcanceladorOUT_2-CcanceladorIN_1;
 RC3=CcanceladorOUT_3-CcanceladorIN_1;
 
-RC4=CcanceladorOUT_1_2-CcanceladorIN_1;
-RC5=CcanceladorOUT_2_2-CcanceladorIN_1;
-RC6=CcanceladorOUT_3_2-CcanceladorIN_1;
+RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
 
 % Relacion señal a cluter
 SC_in=ScanceladorIN-CcanceladorIN_1;
+SC_in_2=ScanceladorIN-CcanceladorIN_2;
+
 SC_cancelador1_out_1=ScanceladorOUT_1-CcanceladorOUT_1;
 SC_cancelador1_out_2=ScanceladorOUT_1-CcanceladorOUT_1_2;
 
@@ -233,13 +235,13 @@ SC_integrador_out_2=SintegradorOUT-CintegradorOUT_2;
 
 % IMTI
 Imti_cancelador1= SC_cancelador1_out_1-SC_in;
-Imti_cancelador1_2= SC_cancelador1_out_2-SC_in;
+Imti_cancelador1_2= SC_cancelador1_out_2-SC_in_2;
 
 Imti_cancelador2= SC_cancelador2_out_1-SC_in;
-Imti_cancelador2_2= SC_cancelador2_out_2-SC_in;
+Imti_cancelador2_2= SC_cancelador2_out_2-SC_in_2;
 
 Imti_cancelador3= SC_cancelador3_out_1-SC_in;
-Imti_cancelador3_2= SC_cancelador3_out_2-SC_in;
+Imti_cancelador3_2= SC_cancelador3_out_2-SC_in_2;
 
 % Relacion señal a ruido
 SN_diezmada=ScanceladorIN-20*log10(NcanceladorIN);
