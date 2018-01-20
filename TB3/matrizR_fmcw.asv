@@ -10,9 +10,9 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.3;% los datos de plots
+% load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -; Ni = 11;escala = 0.3;% los datos de plots
 % load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 4;escala = 0.3;% los datos de plots
-% load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.3;%
+load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.3;%
 
 
 A=src1.Data;
@@ -30,9 +30,9 @@ end
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
-load ('G_C/CANAL2_2GHZ_FM_5.mat');
+% load ('G_C/CANAL2_2GHZ_FM_5.mat');
 % load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
-% load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_r7');
+load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
 B=src1.Data;
 B=double(B);
@@ -122,8 +122,6 @@ for i=1:size(MatrizRadar,2)
 %     MatrizRadar_h_fft(:,i)=(abs(fft(MatrizRadar_hann(:,i))).^2)/((sum(wh_mat)^2)/sum(wh_mat.^2));
 end
 
-Matriz_enventanada = fft(Matriz_enventanada);
-
 %% Diezmado
 
 Ndiez=round(size(Matriz_enventanada,2)/Nceldas);
@@ -132,6 +130,7 @@ Ndiez=round(size(Matriz_enventanada,2)/Nceldas);
  end
     
  matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
+ matrizDiezmadaFrecuenca = fft(matrizDiezmada);
  
 %% Cancelador
 
@@ -145,12 +144,13 @@ matrizCancelador2 = cancelador(2,matrizDiezmada);
 matrizCancelador3 = cancelador(3,matrizDiezmada);
 
 
+matrizCancelador_fft= fft(MatrizCancelador1);
 
     
 %% Integrador
 
-MatrizIntegrada= integrador(2,matrizCancelador1,Ni);
-
+atrizIntegradaTiempo= integrador(2,matrizCancelador1,Ni);
+MatrizIntegrada= integrador(2,matrizCancelador_fft,Ni);
 
 %% CA_CFAR
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
@@ -258,6 +258,21 @@ grid
 shading flat 
 title('Matriz con enventanado Hamming + cancelador+ integrador')
 
+figure(6)
+imagesc(ejex,distancias,20*log(abs(MatrizIntegradaTiempo)))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([0 80])
+
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
+
+grid
+shading flat 
+title('Matriz con enventanado Hamming + cancelador+ integrador tiempo')
 
 
 
