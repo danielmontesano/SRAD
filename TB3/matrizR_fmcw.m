@@ -10,31 +10,31 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-%load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.44;% 0.36 asc los datos de plots
- %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 4;escala = 0.62;% 0.62 desc 
- load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.72;% 0.7 desc
+load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.44;% 0.36 asc los datos de plots
+ %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 7;escala = 0.62;% 0.62 desc 
+ %load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 5; escala = 0.72;% 0.7 desc
 
 
 
 A=src1.Data;
 A=double(A);
 Sincro=diff(filter(ones(1,50),1,(A>5))>10);
-Do=find(Sincro==1);    %rampa ascendente
-%Do=find(Sincro==-1);     %rampa descendente
+%Do=find(Sincro==1);    %rampa ascendente
+Do=find(Sincro==-1);     %rampa descendente
 if Do(1)<1000
     D1=Do(2:end);
     Do=[];
     Do=D1;
 end
-Do=Do;                 %retardo del filtro rampa ascendente   
-%Do=Do-40;                %retardo del filtro rampa descendente
+%Do=Do;                 %retardo del filtro rampa ascendente   
+Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
 
- % load ('G_C/CANAL2_2GHZ_FM_5.mat');
+  load ('G_C/CANAL2_2GHZ_FM_5.mat');
  %load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
- load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
+ %load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
 B=src1.Data;
 B=double(B);
@@ -48,10 +48,10 @@ fm=fs/N*(find(FG==max(FG),1)-1);%Frecuencia de la moduladora
                                 %Estimada con los datos, la FFT y tomando como referencia fs
 Np=floor(fs/fm)+2;
 
- Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+ %Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Ascendente, este par?metro lo puede
                                 % ajustar
-%Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Descendente, este par?metro lo puede
                                 % ajustar                  
 Nfft=round(fs*Tm1);             % N?mero  de muestras en tiempo r?pido
@@ -144,7 +144,7 @@ Matriz_enventanada = fft(Matriz_enventanada);
 
 %% Diezmado
 
-Ndiez=round(size(Matriz_enventanada,2)/Nceldas);
+Ndiez=round(size(Matriz_enventanada,1)/Nceldas);
  for i=1:size(Matriz_enventanada,2)
          MatrizRadar_diez(:,i) = filter((1/Ndiez)*ones(1,Ndiez),1,Matriz_enventanada(:,i),[],1);
  end
@@ -167,22 +167,22 @@ matrizCancelador3 = cancelador(3,matrizDiezmada);
     
 %% Integrador
 
-MatrizIntegrada= integrador(2,matrizCancelador1,Ni);
+MatrizIntegrada = integrador(2,matrizCancelador1,Ni);
 
 
 %% CA_CFAR
-CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni);
 
 
 %% Representaci�n Matriz recibida (en crudo)
 
 
 figure(2)
-imagesc(ejex,distancias,20*log(abs(filter([1 0 ],1,MatrizRadar))))
+imagesc(ejex,distancias,20*log10(abs(filter([1 0 ],1,MatrizRadar))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([0 80])
+caxis([-10 30])
 
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;
@@ -197,11 +197,11 @@ shading flat
 
 %Cancelador simple
 figure(3)
-imagesc(ejex,distancias,20*log(abs(matrizCancelador1)))
+imagesc(ejex,distancias,20*log10(abs(matrizCancelador1)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-30 50])
+caxis([-20 10])
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;
 xlabel('Slot')
@@ -212,11 +212,11 @@ title('Matriz con enventanado Hamming + cancelador simple')
 
 %Cancelador doble
 figure(4)
-imagesc(ejex,distancias,20*log(abs(matrizCancelador2)))
+imagesc(ejex,distancias,20*log10(abs(matrizCancelador2)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-30 50])
+caxis([-20 10])
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;
 xlabel('Slot')
@@ -227,11 +227,11 @@ title('Matriz con enventanado Hamming + cancelador doble')
 
 %Cancelador triple
 figure(5)
-imagesc(ejex,distancias,20*log(abs(matrizCancelador3)))
+imagesc(ejex,distancias,20*log10(abs(matrizCancelador3)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([-30 50])
+caxis([-20 10])
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;
 xlabel('Slot')
@@ -261,11 +261,11 @@ title('Matriz con enventanado Hamming + cancelador triple')
 %% Representaci�n Cancelador + Integrador
 
 figure(6)
-imagesc(ejex,distancias,20*log(abs(MatrizIntegrada)))
+imagesc(ejex,distancias,20*log10(abs(MatrizIntegrada)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-caxis([0 80])
+caxis([-20 10])
 
 c.Label.String = 'Amplitud (dB)';
 c.Label.FontSize = 11;

@@ -1,10 +1,8 @@
-function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
-MatrizEntrada = MatrizIntegrada;
+function [MatrizDetecciones] = CA_CFAR(escala, MatrizEntrada, distancias, ejex,Ni)
+
 m = 4;
 g = 2;
-% 
-% MatrizEntrada = MatrizEntrada*0;
-% MatrizEntrada(100,200) = 1;
+
 CA_CFAR_filter = [ones(1,m/2) zeros(1,g/2) 0 zeros(1,g/2) ones(1,m/2)];
 
 Umbral = filter(CA_CFAR_filter,1,MatrizEntrada,[],1);
@@ -28,10 +26,11 @@ xlabel('Factor de escala')
 ylabel('Log1(Pfa)')
 
 % end
+MatrizDetecciones = MatrizEntrada>escala*Umbral;
 %%
 figure(11)
     
-imagesc(ejex,distancias,(MatrizEntrada>escala*Umbral))
+imagesc(ejex,distancias,MatrizDetecciones)
 set(gca, 'YDir', 'normal');
 colormap('jet')
 xlabel('Slot')
@@ -43,7 +42,9 @@ shading flat
 
 figure
 distan = linspace(0, max(distancias), length(MatrizEntrada(:,1)));
- hold on; plot(distan,20*log(abs(MatrizEntrada(:,200))));plot(distan,20*log(abs(escala*Umbral(:,200))));
+ hold on; 
+ plot(distan,20*log10(abs(MatrizEntrada(:,200)))'); 
+ plot(distan',20*log10(abs(escala*Umbral(:,200))));
  ylabel('Amplitude (dB)');
  xlabel('Distancia (m)');
 
