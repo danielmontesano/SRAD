@@ -128,7 +128,7 @@ Ndiez=round(size(MatrizRadar_h_fft,2)/Nceldas);
     
 %% Integrador
 
-MatrizIntegrada= integrador(2,2,MatrizRadar_h_fft,Ni);
+MatrizIntegrada= integrador(2,MatrizRadar_h_fft,Ni);
 
 
 %% Representaci�n Matriz recibida (en crudo)
