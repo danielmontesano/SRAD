@@ -165,10 +165,11 @@ legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador tr
 figure(3)
 matrizCancelador1 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador1)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador1))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
+caxis([-50 -10])
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Cancelador Simple')
@@ -183,10 +184,11 @@ NcanceladorOUT_1 = rms(matrizCancelador1(24,:));
 figure(4)
 matrizCancelador2 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador2)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador2))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
+caxis([-50 -10])
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Cancelador Doble')
@@ -201,10 +203,11 @@ NcanceladorOUT_2 = rms(matrizCancelador2(24,:));
 figure(5)
 matrizCancelador3 = cancelador(3,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador3)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador3))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
+caxis([-50 -10])
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Cancelador Triple')
