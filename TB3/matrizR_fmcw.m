@@ -172,6 +172,8 @@ NcanceladorIN = rms(matrizDiezmada(72,:));
  
 %% Cancelador
 
+
+
 %Cancelador simple
 matrizCancelador1 = cancelador(1,matrizDiezmada); 
 
@@ -195,6 +197,18 @@ ScanceladorOUT_3=17.96;
 CcanceladorOUT_3=8.052;
 CcanceladorOUT_3_2=10.98;
 NcanceladorOUT_3 = rms(matrizCancelador1(72,:));
+
+
+%Comparacion comparador
+figure(300); hold on;
+plot(abs(matrizDiezmada(:,200)))
+
+plot(abs(matrizCancelador1(:,200)))
+
+plot(abs(matrizCancelador2(:,200)))
+
+plot(abs(matrizCancelador3(:,200)))
+legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador triple');
 
     
 %% Integrador
