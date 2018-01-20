@@ -1,5 +1,4 @@
-function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni,calcFactorEscala)
-
+function [MatrizDetecciones] = CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
 MatrizEntrada = MatrizIntegrada;
 m = 4;
 g = 2;
