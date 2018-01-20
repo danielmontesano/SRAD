@@ -7,18 +7,18 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
+% load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
 % load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
-% load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
+load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
 A=src1.Data;
 A=double(A);
 
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-load('G_C/CANAL_Q_2.mat');
+% load('G_C/CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
-% load('G_C\CANAL_Q_SCANTRACK_4.mat');
+load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -86,7 +86,18 @@ MatrizRadar=MatrizRadar';
 
 %% Cálculo Ti y n
 
+deltaR = 15;
+v = 30;
+PRF = 288;
+rpm_360 = 12;
+rpm_120 = 16;
 
+theta_antena = 6;
+theta_blanco = 4.77;
+
+n_estatico = round((deltaR/v)*PRF);
+n_360 = round(((theta_blanco+theta_antena)*PRF)/(6*rpm_360));
+n_120 = round(((theta_blanco+theta_antena)*PRF)/(6*rpm_120));
 
 %% Pantalla Tipo B
 
@@ -154,11 +165,12 @@ legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador tr
 figure(3)
 matrizCancelador1 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador1)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador1))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Simple')
 xlabel('Slot')
@@ -172,11 +184,12 @@ NcanceladorOUT_1 = rms(matrizCancelador1(24,:));
 figure(4)
 matrizCancelador2 = cancelador(2,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador2)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador2))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Doble')
 xlabel('Slot')
@@ -190,11 +203,12 @@ NcanceladorOUT_2 = rms(matrizCancelador2(24,:));
 figure(5)
 matrizCancelador3 = cancelador(3,matrizDiezmada);
 
-imagesc(ejex,distancias,(abs(matrizCancelador3)))
+imagesc(ejex,distancias,(20*log10(abs(matrizCancelador3))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-c.Label.String = 'Amplitud (V)';
+caxis([-50 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Cancelador Triple')
 xlabel('Slot')
@@ -238,7 +252,8 @@ figure(7)
 imagesc(ejex,distancias,(abs(MatrizIntegrada)))
 set(gca, 'YDir', 'normal');
 colormap('jet')
-c=colorbar;
+c=colorbar;caxis([-50 -30])
+
 c.Label.String = 'Amplitud (V)';
 c.Label.FontSize = 11;
 title('Integrador')
@@ -248,7 +263,7 @@ shading flat
 
 %% CFAR
 
-CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni)
 
 %% Calculo de potencias medidas y relaciones
 

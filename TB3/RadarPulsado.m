@@ -7,18 +7,18 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
-% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
-load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
+load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
+% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=43;
+% load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=32;
 A=src1.Data;
 A=double(A);
 
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C/CANAL_Q_2.mat');
+load('G_C/CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
-load('G_C\CANAL_Q_SCANTRACK_4.mat');
+% load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -249,11 +249,12 @@ CintegradorOUT=0.0031;
 NintegradorOUT = rms(MatrizIntegrada(24,:));
 
 figure(7)
-imagesc(ejex,distancias,(abs(MatrizIntegrada)))
+imagesc(ejex,distancias,(20*log10(abs(MatrizIntegrada))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-c.Label.String = 'Amplitud (V)';
+caxis([-55 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Integrador')
 xlabel('Slot')
