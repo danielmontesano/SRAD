@@ -137,9 +137,20 @@ SC_in=20*log10(ScanceladorIN/CcanceladorIN);
 
 %% Cancelador
 
+%Comparacion comparador
+figure; hold on;
+plot(matrizDiezmada(:,1500))
+matrizCancelador1 = cancelador(1,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+matrizCancelador1 = cancelador(2,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+matrizCancelador1 = cancelador(3,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+
+
 %Cancelador simple
 figure(3)
-matrizCancelador1 = cancelador(1,matrizDiezmada);
+matrizCancelador1 = cancelador(2,matrizDiezmada);
 
 imagesc(ejex,distancias,(abs(matrizCancelador1)))
 set(gca, 'YDir', 'normal');
