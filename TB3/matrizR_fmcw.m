@@ -10,8 +10,8 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.47;% 0.36 asc los datos de plots
- %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 7;escala = 0.60;% 0.62 desc 
+load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.44;% 0.36 asc los datos de plots
+ %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 7;escala = 0.62;% 0.62 desc 
  %load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 5; escala = 0.72;% 0.7 desc
 
 
@@ -19,20 +19,20 @@ load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.47;% 0.36 as
 A=src1.Data;
 A=double(A);
 Sincro=diff(filter(ones(1,50),1,(A>5))>10);
-%Do=find(Sincro==1);    %rampa ascendente
-Do=find(Sincro==-1);     %rampa descendente
+Do=find(Sincro==1);    %rampa ascendente
+% Do=find(Sincro==-1);     %rampa descendente
 if Do(1)<1000
     D1=Do(2:end);
     Do=[];
     Do=D1;
 end
-%Do=Do;                 %retardo del filtro rampa ascendente   
-Do=Do-40;                %retardo del filtro rampa descendente
+Do=Do;                 %retardo del filtro rampa ascendente   
+% Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
 
- load ('G_C/CANAL2_2GHZ_FM_5.mat');
+  load ('G_C/CANAL2_2GHZ_FM_5.mat');
  %load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
  %load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
@@ -48,10 +48,10 @@ fm=fs/N*(find(FG==max(FG),1)-1);%Frecuencia de la moduladora
                                 %Estimada con los datos, la FFT y tomando como referencia fs
 Np=floor(fs/fm)+2;
 
-%Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+ Tm1=0.01;                       % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Ascendente, este par?metro lo puede
                                 % ajustar
-Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
+% Tm1=0.003;                      % Tiempo de barrido, Medida en el Lab, pero se puede extraer de los datos
                                 % Rampa Descendente, este par?metro lo puede
                                 % ajustar                  
 Nfft=round(fs*Tm1);             % N?mero  de muestras en tiempo r?pido
@@ -151,25 +151,104 @@ Ndiez=round(size(Matriz_enventanada,1)/Nceldas);
     
  matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
  
+figure(7)
+imagesc(ejex,distancias,(20*log10(abs(matrizDiezmada))))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([-10 30])
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
+title('Diezmada')
+grid
+shading flat 
+
+ScanceladorIN=19; %dB
+CcanceladorIN_1=14.69;
+CcanceladorIN_2=20.53;
+NcanceladorIN = rms(matrizDiezmada(72,:));
+ 
 %% Cancelador
 
-%Comparacion comparador
-figure(300); hold on;
-plot(abs(matrizDiezmada(:,200)))
-matrizCancelador1 = cancelador(1,matrizDiezmada);
-plot(abs(matrizCancelador1(:,200)))
+%Cancelador simple
+matrizCancelador1 = cancelador(1,matrizDiezmada); 
+
+ScanceladorOUT_1=18.2;
+CcanceladorOUT_1=11.24;
+CcanceladorOUT_1_2=8.86;
+NcanceladorOUT_1 = rms(matrizCancelador1(72,:));
+
+%Cancelador doble
 matrizCancelador2 = cancelador(2,matrizDiezmada);
-plot(abs(matrizCancelador2(:,200)))
+
+ScanceladorOUT_2=18.2;
+CcanceladorOUT_2=15.31;
+CcanceladorOUT_2_2=6.037;
+NcanceladorOUT_2 = rms(matrizCancelador1(72,:));
+
+%Cancelador triple
 matrizCancelador3 = cancelador(3,matrizDiezmada);
-plot(abs(matrizCancelador3(:,200)))
-legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador triple');
+
+ScanceladorOUT_3=17.96;
+CcanceladorOUT_3=8.052;
+CcanceladorOUT_3_2=10.98;
+NcanceladorOUT_3 = rms(matrizCancelador1(72,:));
 
     
 %% Integrador
 
 MatrizIntegrada = integrador(2,matrizCancelador2,Ni);
 
+SintegradorOUT=16.77;
+CintegradorOUT_1=5.85;
+CintegradorOUT_2=6.432;
+NintegradorOUT = rms(MatrizIntegrada(24,:));
 
+%% Calculo de potencias medidas y relaciones
+
+% Relacion de cancelacion
+RC1=CcanceladorOUT_1-CcanceladorIN_1;
+RC2=CcanceladorOUT_2-CcanceladorIN_1;
+RC3=CcanceladorOUT_3-CcanceladorIN_1;
+
+RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
+
+% Relacion señal a cluter
+SC_in=ScanceladorIN-CcanceladorIN_1;
+SC_in_2=ScanceladorIN-CcanceladorIN_2;
+
+SC_cancelador1_out_1=ScanceladorOUT_1-CcanceladorOUT_1;
+SC_cancelador1_out_2=ScanceladorOUT_1-CcanceladorOUT_1_2;
+
+SC_cancelador2_out_1=ScanceladorOUT_2-CcanceladorOUT_2;
+SC_cancelador2_out_2=ScanceladorOUT_2-CcanceladorOUT_2_2;
+
+SC_cancelador3_out_1=ScanceladorOUT_3-CcanceladorOUT_3;
+SC_cancelador3_out_2=ScanceladorOUT_3-CcanceladorOUT_3_2;
+
+SC_integrador_out_1=SintegradorOUT-CintegradorOUT_1;
+SC_integrador_out_2=SintegradorOUT-CintegradorOUT_2;
+
+% IMTI
+Imti_cancelador1= SC_cancelador1_out_1-SC_in;
+Imti_cancelador1_2= SC_cancelador1_out_2-SC_in_2;
+
+Imti_cancelador2= SC_cancelador2_out_1-SC_in;
+Imti_cancelador2_2= SC_cancelador2_out_2-SC_in_2;
+
+Imti_cancelador3= SC_cancelador3_out_1-SC_in;
+Imti_cancelador3_2= SC_cancelador3_out_2-SC_in_2;
+
+% Relacion señal a ruido
+SN_diezmada=ScanceladorIN-20*log10(NcanceladorIN);
+SN_cancelador1=ScanceladorOUT_1-20*log10(NcanceladorOUT_1);
+SN_cancelador2=ScanceladorOUT_2-20*log10(NcanceladorOUT_2);
+SN_cancelador3=ScanceladorOUT_3-20*log10(NcanceladorOUT_3);
+SN_integrador=SintegradorOUT-20*log10(NintegradorOUT);
 %% CA_CFAR
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni);
 
