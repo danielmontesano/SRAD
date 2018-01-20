@@ -10,9 +10,10 @@ clear all
 close all
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos la moduladora');
-load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.3;% los datos de plots
-% load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 4;escala = 0.3;% los datos de plots
-% load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.3;%
+%load ('G_C/CANAL1_2GHZ_FM_5.mat'); Yoffset = -0; Ni = 11;escala = 0.44;% 0.36 asc los datos de plots
+ %load ('G_C/CANAL1_2GHz_FM_SCAN_6.mat'); Yoffset = -0; Ni = 4;escala = 0.62;% 0.62 desc 
+ load ('G_C/CANAL1_2GHZ_FM_SCANTRACK_7'); Yoffset = -0; Ni = 3; escala = 0.72;% 0.7 desc
+
 
 
 A=src1.Data;
@@ -25,14 +26,15 @@ if Do(1)<1000
     Do=[];
     Do=D1;
 end
- Do=Do;                 %retardo del filtro rampa ascendente   
+Do=Do;                 %retardo del filtro rampa ascendente   
 %Do=Do-40;                %retardo del filtro rampa descendente
 
 NPER=max(size(Do))-1;
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos de la se?al de batido');
-load ('G_C/CANAL2_2GHZ_FM_5.mat');
-% load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
-% load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_r7');
+
+ % load ('G_C/CANAL2_2GHZ_FM_5.mat');
+ %load ('G_C/CANAL2_2GHz_FM_SCAN_6.mat');
+ load ('G_C/CANAL2_2GHZ_FM_SCANTRACK_7');
 
 B=src1.Data;
 B=double(B);
@@ -58,7 +60,7 @@ Nfft=round(fs*Tm1);             % N?mero  de muestras en tiempo r?pido
 M=round(max(size(A))/Np)-10;   % N?mero de celdas en tiempo lento que se procesan (quito 10)
 
 
-
+%B = randn(size(B));
 %   figure(1)
  
  
@@ -102,7 +104,7 @@ pared = pared(1);
 MatrizRadar = circshift(MatrizRadar,-round(Yoffset),1);
 ejex= linspace(1,1,Np);
 
-deltaR = 2*3e8/BW;
+deltaR = 3e8/(BW*2);
 Nceldas = Rmax/deltaR;
 
 
