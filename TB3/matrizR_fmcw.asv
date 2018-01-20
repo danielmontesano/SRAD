@@ -151,6 +151,24 @@ Ndiez=round(size(Matriz_enventanada,1)/Nceldas);
     
  matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
  
+figure(2)
+imagesc(ejex,distancias,(abs(matrizDiezmada)))
+set(gca, 'YDir', 'normal');
+colormap('jet')
+c=colorbar;
+caxis([-10 30])
+c.Label.String = 'Amplitud (dB)';
+c.Label.FontSize = 11;
+xlabel('Slot')
+ylabel('Distancia(m)')
+title('Diezmada')
+grid
+shading flat 
+
+ScanceladorIN=0.39; %Naturales
+CcanceladorIN=0.2488;
+NcanceladorIN = rms(matrizDiezmada(24,:));
+ 
 %% Cancelador
 
 %Cancelador simple
