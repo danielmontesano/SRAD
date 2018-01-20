@@ -136,15 +136,15 @@ NcanceladorIN = rms(matrizDiezmada(24,:));
 %% Cancelador
 
 %Comparacion comparador
-figure; hold on;
-plot(matrizDiezmada(:,1500))
+figure(300); hold on;
+plot(abs(matrizDiezmada(:,1500)))
 matrizCancelador1 = cancelador(1,matrizDiezmada);
 plot(abs(matrizCancelador1(:,1500)))
 matrizCancelador1 = cancelador(2,matrizDiezmada);
 plot(abs(matrizCancelador1(:,1500)))
 matrizCancelador1 = cancelador(3,matrizDiezmada);
 plot(abs(matrizCancelador1(:,1500)))
-
+legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador triple');
 
 %Cancelador simple
 figure(3)
