@@ -7,18 +7,18 @@ D=double(D);
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal I');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
-% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=24;
-load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=18;
+load('G_C/CANAL_I_2.mat'); YoffsetD= 306;Ni= 144; escala = 0.28;
+% load('G_C\CANAL_I_SCAN_3.mat');YoffsetD= 1.0572e3;Ni=43;
+% load('G_C\CANAL_I_SCANTRACK_4.mat');YoffsetD= 1.0494e3;Ni=32;
 A=src1.Data;
 A=double(A);
 
 
 % [DatosPlots, directorio] = uigetfile('*mat', 'Escoja el fichero de datos del canal Q');
 % load (cat(2, directorio, DatosPlots)); % los datos de plots
-% load('G_C/CANAL_Q_2.mat');
+load('G_C/CANAL_Q_2.mat');
 % load('G_C\CANAL_Q_SCAN_3.mat');
-load('G_C\CANAL_Q_SCANTRACK_4.mat');
+% load('G_C\CANAL_Q_SCANTRACK_4.mat');
 B=src1.Data;
 B=double(B);
 
@@ -148,6 +148,12 @@ ScanceladorIN=0.39; %Naturales
 CcanceladorIN=0.2488;
 NcanceladorIN = rms(matrizDiezmada(24,:));
 
+
+CcanceladorIN_2= 10^(0.426/20); %naturales
+
+
+
+
 %% Cancelador
 
 %Comparacion comparador
@@ -179,6 +185,12 @@ ylabel('Distancia(m)')
 ScanceladorOUT_1=0.06284;
 CcanceladorOUT_1=0.002181;
 NcanceladorOUT_1 = rms(matrizCancelador1(24,:));
+
+CcanceladorOUT_1_2=-51.59;
+CcanceladorOUT_2=-51.59;
+CcanceladorOUT_3=-54.23;
+
+
 
 %Cancelador doble
 figure(4)
@@ -249,12 +261,12 @@ CintegradorOUT=0.0031;
 NintegradorOUT = rms(MatrizIntegrada(24,:));
 
 figure(7)
-imagesc(ejex,distancias,(abs(MatrizIntegrada)))
+imagesc(ejex,distancias,(20*log10(abs(MatrizIntegrada))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
-c=colorbar;caxis([-50 -30])
-
-c.Label.String = 'Amplitud (V)';
+c=colorbar;
+caxis([-55 -30])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Integrador')
 xlabel('Slot')
@@ -268,9 +280,13 @@ CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni)
 %% Calculo de potencias medidas y relaciones
 
 % Relacion de cancelacion
-RC1=CcanceladorOUT_1;
-RC2=CcanceladorOUT_2;
-RC3=CcanceladorOUT_3;
+RC1=20*log10(CcanceladorOUT_1/CcanceladorIN);
+RC2=20*log10(CcanceladorOUT_2/CcanceladorIN);
+RC3=20*log10(CcanceladorOUT_3/CcanceladorIN);
+
+ RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+ RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+ RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
 
 % Relacion señal a cluter
 SC_in=20*log10(ScanceladorIN/CcanceladorIN);
@@ -291,3 +307,4 @@ SN_cancelador2=20*log10(ScanceladorOUT_2/NcanceladorOUT_2);
 SN_cancelador3=20*log10(ScanceladorOUT_3/NcanceladorOUT_3);
 SN_integrador=20*log10(SintegradorOUT/NintegradorOUT);
 
+I=SN_integrador-SN_cancelador1;

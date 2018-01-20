@@ -249,6 +249,8 @@ SN_cancelador1=ScanceladorOUT_1-20*log10(NcanceladorOUT_1);
 SN_cancelador2=ScanceladorOUT_2-20*log10(NcanceladorOUT_2);
 SN_cancelador3=ScanceladorOUT_3-20*log10(NcanceladorOUT_3);
 SN_integrador=SintegradorOUT-20*log10(NintegradorOUT);
+
+I=SN_integrador-SN_cancelador2;
 %% CA_CFAR
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni);
 

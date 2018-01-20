@@ -148,6 +148,12 @@ ScanceladorIN=0.39; %Naturales
 CcanceladorIN=0.2488;
 NcanceladorIN = rms(matrizDiezmada(24,:));
 
+
+CcanceladorIN_2= 10^(0.426/20); %naturales
+
+
+
+
 %% Cancelador
 
 %Comparacion comparador
@@ -179,6 +185,12 @@ ylabel('Distancia(m)')
 ScanceladorOUT_1=0.06284;
 CcanceladorOUT_1=0.002181;
 NcanceladorOUT_1 = rms(matrizCancelador1(24,:));
+
+CcanceladorOUT_1_2=-51.59;
+CcanceladorOUT_2=-51.59;
+CcanceladorOUT_3=-54.23;
+
+
 
 %Cancelador doble
 figure(4)
@@ -268,9 +280,13 @@ CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni)
 %% Calculo de potencias medidas y relaciones
 
 % Relacion de cancelacion
-RC1=CcanceladorOUT_1;
-RC2=CcanceladorOUT_2;
-RC3=CcanceladorOUT_3;
+RC1=20*log10(CcanceladorOUT_1/CcanceladorIN);
+RC2=20*log10(CcanceladorOUT_2/CcanceladorIN);
+RC3=20*log10(CcanceladorOUT_3/CcanceladorIN);
+
+ RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+ RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+ RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
 
 % Relacion señal a cluter
 SC_in=20*log10(ScanceladorIN/CcanceladorIN);
@@ -291,3 +307,4 @@ SN_cancelador2=20*log10(ScanceladorOUT_2/NcanceladorOUT_2);
 SN_cancelador3=20*log10(ScanceladorOUT_3/NcanceladorOUT_3);
 SN_integrador=20*log10(SintegradorOUT/NintegradorOUT);
 
+I=SN_integrador-SN_cancelador1;
