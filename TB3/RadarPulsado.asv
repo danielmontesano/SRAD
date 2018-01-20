@@ -82,7 +82,7 @@ end
 
 MatrizRadar=MatrizRadar';
 
- %MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
+% MatrizRadar = randn(size(MatrizRadar))+j*randn(size(MatrizRadar));
 
 %% Pantalla Tipo B
 
@@ -118,11 +118,12 @@ matrizDiezmada = MatrizRadar_diez((Ndiez:Ndiez:end),:);
     
 %Representacion 
 figure(2)
-imagesc(ejex,distancias,(abs(matrizDiezmada)))
+imagesc(ejex,distancias,20*log10((abs(matrizDiezmada))))
 set(gca, 'YDir', 'normal');
 colormap('jet')
 c=colorbar;
-c.Label.String = 'Amplitud (V)';
+caxis([-30 0])
+c.Label.String = 'dB';
 c.Label.FontSize = 11;
 title('Filtrado y diezmado')
 xlabel('Slot')
@@ -135,9 +136,20 @@ NcanceladorIN = rms(matrizDiezmada(24,:));
 
 %% Cancelador
 
+%Comparacion comparador
+figure(300); hold on;
+plot(abs(matrizDiezmada(:,1500)))
+matrizCancelador1 = cancelador(1,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+matrizCancelador1 = cancelador(2,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+matrizCancelador1 = cancelador(3,matrizDiezmada);
+plot(abs(matrizCancelador1(:,1500)))
+legend('Sin cancelador', 'Cancelador simple', 'Cancelador doble', 'Cancelador triple');
+
 %Cancelador simple
 figure(3)
-matrizCancelador1 = cancelador(1,matrizDiezmada);
+matrizCancelador1 = cancelador(2,matrizDiezmada);
 
 imagesc(ejex,distancias,(abs(matrizCancelador1)))
 set(gca, 'YDir', 'normal');
@@ -233,7 +245,7 @@ shading flat
 
 %% CFAR
 
-CA_CFAR(escala, MatrizIntegrada, distancias, ejex)
+CA_CFAR(escala, MatrizIntegrada, distancias, ejex,Ni)
 
 %% Calculo de potencias medidas y relaciones
 
@@ -242,23 +254,22 @@ RC1=CcanceladorOUT_1;
 RC2=CcanceladorOUT_2;
 RC3=CcanceladorOUT_3;
 
-% Rela
+% Relacion señal a cluter
 SC_in=20*log10(ScanceladorIN/CcanceladorIN);
 SC_cancelador1_out=20*log10(ScanceladorOUT_1/CcanceladorOUT_1);
 SC_cancelador2_out=20*log10(ScanceladorOUT_2/CcanceladorOUT_2);
 SC_cancelador3_out=20*log10(ScanceladorOUT_3/CcanceladorOUT_3);
 SC_integrador_out=20*log10(SintegradorOUT/CintegradorOUT);
 
-
+% IMTI
 Imti_cancelador1= SC_cancelador1_out-SC_in;
 Imti_cancelador2= SC_cancelador2_out-SC_in;
 Imti_cancelador3= SC_cancelador3_out-SC_in;
 
+% Relacion señal a ruido
 SN_diezmada=20*log10(ScanceladorIN/NcanceladorIN);
 SN_cancelador1=20*log10(ScanceladorOUT_1/NcanceladorOUT_1);
 SN_cancelador2=20*log10(ScanceladorOUT_2/NcanceladorOUT_2);
 SN_cancelador3=20*log10(ScanceladorOUT_3/NcanceladorOUT_3);
 SN_integrador=20*log10(SintegradorOUT/NintegradorOUT);
 
-
-% Nos quedamos con el cancelador 1
