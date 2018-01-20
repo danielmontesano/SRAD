@@ -8,8 +8,9 @@ g = 2;
 % Matriz2=MatrizEntrada(4:end,:);
 % Vec = zeros(1,15)';
 % Vec(8) = 1;
-
-    
+% 
+% MatrizEntrada = MatrizEntrada*0;
+% MatrizEntrada(100,200) = 1;
 CA_CFAR_filter = [ones(1,m/2) zeros(1,g/2) 0 zeros(1,g/2) ones(1,m/2)];
 
 Umbral = filter(CA_CFAR_filter,1,MatrizEntrada,[],1);
@@ -48,8 +49,12 @@ title('CFAR')
 
 
 grid
-shading flat 
+shading flat
+
 figure
- hold on; plot(MatrizEntrada(:,100));plot(escala*Umbral(:,100));
+distan = linspace(0, max(distancias), length(MatrizEntrada(:,1)));
+ hold on; plot(distan,20*log(abs(MatrizEntrada(:,200))));plot(distan,20*log(abs(escala*Umbral(:,200))));
+ ylabel('Amplitude (dB)');
+ xlabel('Distancia (m)');
 
 end
