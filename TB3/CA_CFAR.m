@@ -32,7 +32,7 @@ figure(11)
     
 imagesc(ejex,distancias,MatrizDetecciones)
 set(gca, 'YDir', 'normal');
-colormap('jet')
+colormap('parula')
 xlabel('Slot')
 ylabel('Distancia(m)')
 title('CFAR')
