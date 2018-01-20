@@ -199,10 +199,11 @@ NcanceladorOUT_3 = rms(matrizCancelador1(72,:));
     
 %% Integrador
 
-MatrizIntegrada = integrador(2,matrizCancelador1,Ni);
+MatrizIntegrada = integrador(2,matrizCancelador2,Ni);
 
-SintegradorOUT=0.03913;
-CintegradorOUT=0.0031;
+SintegradorOUT=16.77;
+CintegradorOUT_1=5.85;
+CintegradorOUT_2=6.432;
 NintegradorOUT = rms(MatrizIntegrada(24,:));
 
 %% Calculo de potencias medidas y relaciones
@@ -212,28 +213,40 @@ RC1=CcanceladorOUT_1-CcanceladorIN_1;
 RC2=CcanceladorOUT_2-CcanceladorIN_1;
 RC3=CcanceladorOUT_3-CcanceladorIN_1;
 
-RC4=CcanceladorOUT_1-CcanceladorIN_1;
-RC5=CcanceladorOUT_2-CcanceladorIN_1;
-RC6=CcanceladorOUT_3-CcanceladorIN_1;
+RC4=CcanceladorOUT_1_2-CcanceladorIN_1;
+RC5=CcanceladorOUT_2_2-CcanceladorIN_1;
+RC6=CcanceladorOUT_3_2-CcanceladorIN_1;
 
 % Relacion señal a cluter
 SC_in=ScanceladorIN-CcanceladorIN_1;
-SC_cancelador1_out=ScanceladorOUT_1-CcanceladorOUT_1;
-SC_cancelador2_out=ScanceladorOUT_2-CcanceladorOUT_2;
-SC_cancelador3_out=ScanceladorOUT_3-CcanceladorOUT_3;
-SC_integrador_out=SintegradorOUT-CintegradorOUT;
+SC_cancelador1_out_1=ScanceladorOUT_1-CcanceladorOUT_1;
+SC_cancelador1_out_2=ScanceladorOUT_1-CcanceladorOUT_1_2;
+
+SC_cancelador2_out_1=ScanceladorOUT_2-CcanceladorOUT_2;
+SC_cancelador2_out_2=ScanceladorOUT_2-CcanceladorOUT_2_2;
+
+SC_cancelador3_out_1=ScanceladorOUT_3-CcanceladorOUT_3;
+SC_cancelador3_out_2=ScanceladorOUT_3-CcanceladorOUT_3_2;
+
+SC_integrador_out_1=SintegradorOUT-CintegradorOUT_1;
+SC_integrador_out_2=SintegradorOUT-CintegradorOUT_2;
 
 % IMTI
-Imti_cancelador1= SC_cancelador1_out-SC_in;
-Imti_cancelador2= SC_cancelador2_out-SC_in;
-Imti_cancelador3= SC_cancelador3_out-SC_in;
+Imti_cancelador1= SC_cancelador1_out_1-SC_in;
+Imti_cancelador1_2= SC_cancelador1_out_2-SC_in;
+
+Imti_cancelador2= SC_cancelador2_out_1-SC_in;
+Imti_cancelador2_2= SC_cancelador2_out_2-SC_in;
+
+Imti_cancelador3= SC_cancelador3_out_1-SC_in;
+Imti_cancelador3_2= SC_cancelador3_out_2-SC_in;
 
 % Relacion señal a ruido
-SN_diezmada=20*log10(ScanceladorIN/NcanceladorIN);
-SN_cancelador1=20*log10(ScanceladorOUT_1/NcanceladorOUT_1);
-SN_cancelador2=20*log10(ScanceladorOUT_2/NcanceladorOUT_2);
-SN_cancelador3=20*log10(ScanceladorOUT_3/NcanceladorOUT_3);
-SN_integrador=20*log10(SintegradorOUT/NintegradorOUT);
+SN_diezmada=ScanceladorIN-20*log10(NcanceladorIN);
+SN_cancelador1=ScanceladorOUT_1-20*log10(NcanceladorOUT_1);
+SN_cancelador2=ScanceladorOUT_2-20*log10(NcanceladorOUT_2);
+SN_cancelador3=ScanceladorOUT_3-20*log10(NcanceladorOUT_3);
+SN_integrador=SintegradorOUT-20*log10(NintegradorOUT);
 %% CA_CFAR
 CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni);
 
