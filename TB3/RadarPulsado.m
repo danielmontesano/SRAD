@@ -145,7 +145,7 @@ ylabel('Distancia(m)')
 
 %Calculo de clutter
 ScanceladorIN=0.39; %Naturales
-CcanceladorIN=0.2488;
+CcanceladorIN_1=0.2488;
 NcanceladorIN = rms(matrizDiezmada(24,:));
 
 
@@ -182,13 +182,13 @@ title('Cancelador Simple')
 xlabel('Slot')
 ylabel('Distancia(m)')
 
-ScanceladorOUT_1=0.06284;
-CcanceladorOUT_1=0.002181;
-NcanceladorOUT_1 = rms(matrizCancelador1(24,:));
+ScanceladorOUT_1=10^(0.06284/20);
+CcanceladorOUT_1=10^(0.002181/20);
+NcanceladorOUT_1 = 20*log10(rms(matrizCancelador1(24,:)));
 
 CcanceladorOUT_1_2=-51.59;
-CcanceladorOUT_2=-51.59;
-CcanceladorOUT_3=-54.23;
+CcanceladorOUT_2_2=-51.59;
+CcanceladorOUT_3_2=-54.23;
 
 
 
@@ -207,9 +207,9 @@ title('Cancelador Doble')
 xlabel('Slot')
 ylabel('Distancia(m)')
 
-ScanceladorOUT_2=0.01059;
-CcanceladorOUT_2=0.0007926;
-NcanceladorOUT_2 = rms(matrizCancelador2(24,:));
+ScanceladorOUT_2=10^(0.01059/20);
+CcanceladorOUT_2=10^(0.0007926/20);
+NcanceladorOUT_2 = 20*log10(rms(matrizCancelador2(24,:)));
 
 %Cancelador triple
 figure(5)
@@ -226,9 +226,9 @@ title('Cancelador Triple')
 xlabel('Slot')
 ylabel('Distancia(m)')
 
-ScanceladorOUT_3=0.005101;
-CcanceladorOUT_3=0.001387;
-NcanceladorOUT_3 = rms(matrizCancelador3(24,:));
+ScanceladorOUT_3=10^(0.005101/20);
+CcanceladorOUT_3=10^(0.001387);
+NcanceladorOUT_3 = 20*log10(rms(matrizCancelador3(24,:)));
 
 %Cancelador cero
 
@@ -256,9 +256,9 @@ Ni_scantrack=18;
 
 MatrizIntegrada= integrador(1,matrizCancelador1,Ni);
 
-SintegradorOUT=0.03913;
-CintegradorOUT=0.0031;
-NintegradorOUT = rms(MatrizIntegrada(24,:));
+SintegradorOUT=10^(0.03913/20);
+CintegradorOUT_1=10^(0.0031/20);
+NintegradorOUT = 20*log10(rms(MatrizIntegrada(24,:)));
 
 figure(7)
 imagesc(ejex,distancias,(20*log10(abs(MatrizIntegrada))))
@@ -279,26 +279,78 @@ CA_CFAR(escala, MatrizIntegrada, distancias, ejex, Ni)
 
 %% Calculo de potencias medidas y relaciones
 
-% Relacion de cancelacion
-RC1=20*log10(CcanceladorOUT_1/CcanceladorIN);
-RC2=20*log10(CcanceladorOUT_2/CcanceladorIN);
-RC3=20*log10(CcanceladorOUT_3/CcanceladorIN);
+% % Relacion de cancelacion
+% RC1=20*log10(CcanceladorOUT_1/CcanceladorIN);
+% RC2=20*log10(CcanceladorOUT_2/CcanceladorIN);
+% RC3=20*log10(CcanceladorOUT_3/CcanceladorIN);
+% 
+%  RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+%  RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+%  RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
+% 
+% % Relacion señal a cluter
+% SC_in=20*log10(ScanceladorIN/CcanceladorIN);
+% SC_cancelador1_out=20*log10(ScanceladorOUT_1/CcanceladorOUT_1);
+% SC_cancelador2_out=20*log10(ScanceladorOUT_2/CcanceladorOUT_2);
+% SC_cancelador3_out=20*log10(ScanceladorOUT_3/CcanceladorOUT_3);
+% SC_integrador_out=20*log10(SintegradorOUT/CintegradorOUT);
+% 
+% SC_in=ScanceladorIN-CcanceladorIN_1;
+% SC_in_2=ScanceladorIN-CcanceladorIN_2;
+% 
+% SC_cancelador1_out_1=ScanceladorOUT_1-CcanceladorOUT_1;
+% SC_cancelador1_out_2=ScanceladorOUT_1-CcanceladorOUT_1_2;
+% 
+% SC_cancelador2_out_1=ScanceladorOUT_2-CcanceladorOUT_2;
+% SC_cancelador2_out_2=ScanceladorOUT_2-CcanceladorOUT_2_2;
+% 
+% SC_cancelador3_out_1=ScanceladorOUT_3-CcanceladorOUT_3;
+% SC_cancelador3_out_2=ScanceladorOUT_3-CcanceladorOUT_3_2;
+% 
+% % IMTI
+% 
+% Imti_cancelador1_2= SC_cancelador1_out_2-SC_in_2;
+% 
+% 
+% Imti_cancelador2_2= SC_cancelador2_out_2-SC_in_2;
+% 
+% 
+% Imti_cancelador3_2= SC_cancelador3_out_2-SC_in_2;
 
- RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
- RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
- RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
+% Relacion de cancelacion
+RC1=CcanceladorOUT_1-CcanceladorIN_1;
+RC2=CcanceladorOUT_2-CcanceladorIN_1;
+RC3=CcanceladorOUT_3-CcanceladorIN_1;
+
+RC4=CcanceladorOUT_1_2-CcanceladorIN_2;
+RC5=CcanceladorOUT_2_2-CcanceladorIN_2;
+RC6=CcanceladorOUT_3_2-CcanceladorIN_2;
 
 % Relacion señal a cluter
-SC_in=20*log10(ScanceladorIN/CcanceladorIN);
-SC_cancelador1_out=20*log10(ScanceladorOUT_1/CcanceladorOUT_1);
-SC_cancelador2_out=20*log10(ScanceladorOUT_2/CcanceladorOUT_2);
-SC_cancelador3_out=20*log10(ScanceladorOUT_3/CcanceladorOUT_3);
-SC_integrador_out=20*log10(SintegradorOUT/CintegradorOUT);
+SC_in=ScanceladorIN-CcanceladorIN_1;
+SC_in_2=ScanceladorIN-CcanceladorIN_2;
+
+SC_cancelador1_out_1=ScanceladorOUT_1-CcanceladorOUT_1;
+SC_cancelador1_out_2=ScanceladorOUT_1-CcanceladorOUT_1_2;
+
+SC_cancelador2_out_1=ScanceladorOUT_2-CcanceladorOUT_2;
+SC_cancelador2_out_2=ScanceladorOUT_2-CcanceladorOUT_2_2;
+
+SC_cancelador3_out_1=ScanceladorOUT_3-CcanceladorOUT_3;
+SC_cancelador3_out_2=ScanceladorOUT_3-CcanceladorOUT_3_2;
+
+%SC_integrador_out_1=SintegradorOUT-CintegradorOUT_1;
+%SC_integrador_out_2=SintegradorOUT-CintegradorOUT_2;
 
 % IMTI
-Imti_cancelador1= SC_cancelador1_out-SC_in;
-Imti_cancelador2= SC_cancelador2_out-SC_in;
-Imti_cancelador3= SC_cancelador3_out-SC_in;
+Imti_cancelador1= SC_cancelador1_out_1-SC_in;
+Imti_cancelador1_2= SC_cancelador1_out_2-SC_in_2;
+
+Imti_cancelador2= SC_cancelador2_out_1-SC_in;
+Imti_cancelador2_2= SC_cancelador2_out_2-SC_in_2;
+
+Imti_cancelador3= SC_cancelador3_out_1-SC_in;
+Imti_cancelador3_2= SC_cancelador3_out_2-SC_in_2;
 
 % Relacion señal a ruido
 SN_diezmada=20*log10(ScanceladorIN/NcanceladorIN);
