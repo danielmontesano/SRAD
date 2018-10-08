@@ -35,7 +35,7 @@ set(gca, 'YDir', 'normal');
 colormap('parula')
 xlabel('Slot')
 ylabel('Distancia(m)')
-title('CFAR')
+title(['Matriz de detecciones con N_{i}=', num2str(Ni),' y T = ',num2str(escala)]) 
 
 grid
 shading flat
@@ -48,4 +48,7 @@ distan = linspace(0, max(distancias), length(MatrizEntrada(:,1)));
  ylabel('Amplitude (dB)');
  xlabel('Distancia (m)');
 
+ 
+ %% Perdidas
+ L = 10*log10((10^-3)^(-1/(2*m)));
 end
